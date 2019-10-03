@@ -1,5 +1,7 @@
 package sky.tool.spider.utils;
 
+import java.text.SimpleDateFormat;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -38,10 +40,10 @@ public class SpringUtil implements ApplicationContextAware
 		return getApplicationContext().getBean(name);
 	}
 	
-	public static Integer getWebIdFromUrl(String url) throws NumberFormatException
+	public static Integer getWebIdFromUrl(String url , String ngateMark) throws NumberFormatException
 	{
 		Integer webid = Integer.valueOf(url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf(".")));
-		if(!url.contains("xiazai"))
+		if(!url.contains(ngateMark))
 		{
 			webid = Math.negateExact(webid);
 		}
@@ -75,5 +77,11 @@ public class SpringUtil implements ApplicationContextAware
 	public static String innerGetter(String HTMLElement)
 	{
 		return HTMLElement.substring(HTMLElement.indexOf(">") + 1, HTMLElement.lastIndexOf("<"));
+	}
+	
+	public static SimpleDateFormat ymdFomat()
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return sdf;
 	}
 }

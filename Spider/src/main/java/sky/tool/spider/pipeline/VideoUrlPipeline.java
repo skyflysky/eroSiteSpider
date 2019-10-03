@@ -45,15 +45,14 @@ public class VideoUrlPipeline implements Pipeline
 		
 		try
 		{
-			VideoPage videoPage = videoPageService.getVideoPageByWebId(SpringUtil.getWebIdFromUrl(rowUrl));
+			VideoPage videoPage = videoPageService.getVideoPageByWebId(SpringUtil.getWebIdFromUrl(rowUrl , "xiazai"));
 			
 			
 			String type = rowType.substring(rowType.lastIndexOf("：") + 1, rowType.lastIndexOf("<"));
 			
 			String uploadDate = rowUploadDate.substring(rowUploadDate.lastIndexOf("：") + 1, rowUploadDate.lastIndexOf("<"));
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			Calendar uploadCalendar = Calendar.getInstance();
-			uploadCalendar.setTime(sdf.parse(uploadDate));
+			uploadCalendar.setTime(SpringUtil.ymdFomat().parse(uploadDate));
 			
 			String magnate = SpringUtil.attGetter(rowMagnate, "value");
 			

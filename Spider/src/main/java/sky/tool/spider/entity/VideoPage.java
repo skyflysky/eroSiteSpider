@@ -99,7 +99,7 @@ public class VideoPage
 	public VideoPage(String url) throws NumberFormatException
 	{
 		super();
-		this.webId = SpringUtil.getWebIdFromUrl(url);
+		this.webId = SpringUtil.getWebIdFromUrl(url , "xiazai");
 		this.addTime = Calendar.getInstance();
 		this.openable = false;
 		this.retryCount = 0;

@@ -41,33 +41,33 @@ public class VideoUrlTask implements ApplicationRunner
 	
 	public void doSpider()
 	{
-		if (workMode.equals("grab") && grabMode.equals("url"))
+		logger.info("开始爬具体的网页页面");
+		List<VideoPage> vpList = vpSerivce.findAblePage();
+		List<String> urlList = new ArrayList<String>();
+		for (VideoPage vp : vpList)
 		{
-			logger.info("开始爬具体的网页页面");
-			List<VideoPage> vpList = vpSerivce.findAblePage();
-			List<String> urlList = new ArrayList<String>();
-			for (VideoPage vp : vpList)
+			if (vp.getWebId() > 0)
 			{
-				if (vp.getWebId() > 0)
-				{
-					StringBuilder sb = new StringBuilder("https://");
-					sb.append(domain);
-					sb.append("/xiazai/");
-					sb.append(vp.getWebId());
-					sb.append(".html");
-					urlList.add(sb.toString());
-				}
+				StringBuilder sb = new StringBuilder("https://");
+				sb.append(domain);
+				sb.append("/xiazai/");
+				sb.append(vp.getWebId());
+				sb.append(".html");
+				urlList.add(sb.toString());
 			}
-			String[] urls = new String[urlList.size()];
-			urlList.toArray(urls);
-			Spider.create(vuProcessor).addUrl(urls).addPipeline(vuPipeline).thread(10).run();
-			logger.info("具体的网页页面爬完了");
 		}
+		String[] urls = new String[urlList.size()];
+		urlList.toArray(urls);
+		Spider.create(vuProcessor).addUrl(urls).addPipeline(vuPipeline).thread(10).run();
+		logger.info("具体的网页页面爬完了");
 	}
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception
 	{
-		doSpider();
+		if (workMode.equals("grab") && grabMode.equals("vurl"))
+		{
+			doSpider();
+		}
 	}
 }
