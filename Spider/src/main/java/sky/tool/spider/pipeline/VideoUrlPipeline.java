@@ -45,7 +45,7 @@ public class VideoUrlPipeline implements Pipeline
 		
 		try
 		{
-			VideoPage videoPage = videoPageService.getVideoPageByWebId(SpringUtil.getWebIdFromUrl(rowUrl , "xiazai"));
+			VideoPage videoPage = videoPageService.getVideoPageByWebId(SpringUtil.getWebIdFromUrl(rowUrl , VideoPage.ngateMark));
 			
 			
 			String type = rowType.substring(rowType.lastIndexOf("：") + 1, rowType.lastIndexOf("<"));

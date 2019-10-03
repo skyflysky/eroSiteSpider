@@ -24,6 +24,7 @@ public class VideoUrlProcessor implements PageProcessor
 		page.putField("titlePic", page.getHtml().css(".lazy").toString());
 		page.putField("title", page.getHtml().css("h2.c_pink").toString());
 		page.putField("url", page.getUrl().toString());
+		logger.info("下载完成" + page.getUrl().toString());
 	}
 
 	@Override

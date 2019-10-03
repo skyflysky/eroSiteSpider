@@ -17,6 +17,8 @@ import sky.tool.spider.utils.SpringUtil;
 
 public class VideoPage
 {
+	public static final String ngateMark = "xiazai";
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -99,7 +101,7 @@ public class VideoPage
 	public VideoPage(String url) throws NumberFormatException
 	{
 		super();
-		this.webId = SpringUtil.getWebIdFromUrl(url , "xiazai");
+		this.webId = SpringUtil.getWebIdFromUrl(url , ngateMark);
 		this.addTime = Calendar.getInstance();
 		this.openable = false;
 		this.retryCount = 0;

@@ -64,7 +64,7 @@ public class VideoPageServiceImpl implements VideoPageService
 				List<Predicate> pList = new ArrayList<Predicate>();
 				
 				pList.add(cb.equal(root.get("openable").as(Boolean.class), false));
-				pList.add(cb.lessThanOrEqualTo(root.get("retryCount").as(Integer.class), 2));
+				pList.add(cb.lessThanOrEqualTo(root.get("retryCount").as(Integer.class), 3));
 				
 				Predicate[] pArray = new Predicate[pList.size()];
 				pList.toArray(pArray);

@@ -1,12 +1,16 @@
 package sky.tool.spider.entity;
 
 import java.util.Calendar;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -17,6 +21,8 @@ import sky.tool.spider.utils.SpringUtil;
 
 public class PicPage
 {
+	public static final String ngateMark = "tupian";
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -47,7 +53,13 @@ public class PicPage
 	
 	@Column(nullable = false)
 	private String type;
-
+	
+	@Column(nullable = true)
+	private Integer picCount;
+	
+	@OneToMany(mappedBy = "page" , cascade = { CascadeType.REFRESH, CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE },fetch = FetchType.LAZY )
+	private Set<PicUrl> pics;
+	
 	public Long getId()
 	{
 		return id;
@@ -147,6 +159,26 @@ public class PicPage
 	{
 		this.type = type;
 	}
+	
+	public Integer getPicCount()
+	{
+		return picCount;
+	}
+
+	public void setPicCount(Integer picCount)
+	{
+		this.picCount = picCount;
+	}
+
+	public Set<PicUrl> getPics()
+	{
+		return pics;
+	}
+
+	public void setPics(Set<PicUrl> pics)
+	{
+		this.pics = pics;
+	}
 
 	public PicPage()
 	{
@@ -156,7 +188,7 @@ public class PicPage
 	public PicPage(String picUrl, String pageUrl, String title, Calendar uploadDate , String type) throws NumberFormatException
 	{
 		super();
-		this.webId = SpringUtil.getWebIdFromUrl(pageUrl, "tupian");
+		this.webId = SpringUtil.getWebIdFromUrl(pageUrl, ngateMark);
 		this.picUrl = picUrl;
 		this.pageUrl = pageUrl;
 		this.title = title;
@@ -165,6 +197,7 @@ public class PicPage
 		this.grabTime = Calendar.getInstance();
 		this.openAble = false;
 		this.retryCount = 0;
+		this.picCount = -1;
 	}
 
 	
