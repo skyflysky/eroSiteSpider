@@ -1,6 +1,12 @@
 package sky.tool.spider.utils;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+
+import javax.imageio.ImageIO;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -83,5 +89,12 @@ public class SpringUtil implements ApplicationContextAware
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		return sdf;
+	}
+	
+	public static boolean isPictureSideways(File file) throws IOException
+	{
+		FileInputStream fis = new FileInputStream(file);
+		BufferedImage bi = ImageIO.read(fis);
+		return bi.getWidth() > bi.getHeight();
 	}
 }
