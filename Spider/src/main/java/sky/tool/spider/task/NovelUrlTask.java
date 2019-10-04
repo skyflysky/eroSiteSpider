@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import sky.tool.spider.service.NovelService;
 
-@ConditionalOnProperty(prefix="work" , name = "mode" ,havingValue = "kk")
+@ConditionalOnProperty(prefix="work" , name = "mode" ,havingValue = "grab")
 @Component
 
 public class NovelUrlTask extends AbstractTask
