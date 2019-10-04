@@ -58,7 +58,7 @@ public class PicPageTask implements ApplicationRunner
 		List<String> urlList = new ArrayList<String>();
 		for (String thirdPath : thirdPaths)
 		{
-			for (int i = 1; i <= 50; i++)
+			for (int i = 1; i <= 5; i++)
 			{
 				StringBuilder sb = new StringBuilder("https://");
 				sb.append(domain);

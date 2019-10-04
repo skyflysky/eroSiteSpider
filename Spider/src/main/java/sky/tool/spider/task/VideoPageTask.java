@@ -53,7 +53,7 @@ public class VideoPageTask implements ApplicationRunner
 		urlList.add("https://www." + domain +"/index/home.html");
 		for (String thirdPath : thirdPaths)
 		{
-			for (int i = 1; i <= 5; i++)
+			for (int i = 1; i <= 2; i++)
 			{
 				StringBuilder sb = new StringBuilder("https://");
 				sb.append(domain);
