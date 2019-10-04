@@ -53,17 +53,20 @@ public class PicDownLoadTask implements ApplicationRunner
 		{
 			try
 			{
-				Thread.sleep(1000);
-			} catch (InterruptedException e)
+				//Thread.sleep(1000);
+				
+				String url = unloadList.get(i).getUrl();
+				String[] storageTree = url.split("/");
+				
+				File targetFile = makeDir(new File(storage) , storageTree , 2);
+				logger.info("开始下载" + unloadList.get(i).getId() + "，它是第" + (i + 1)  + "/" + count);
+				tool.download(url,targetFile , unloadList.get(i).getId());
+			} 
+			catch (Exception e) 
 			{
-				e.printStackTrace();
+				logger.error("未知错误" , e);
+				continue;
 			}
-			String url = unloadList.get(i).getUrl();
-			String[] storageTree = url.split("/");
-			
-			File targetFile = makeDir(new File(storage) , storageTree , 2);
-			logger.info("开始下载第" + (i + 1)  + "/" + count);
-			tool.download(url,targetFile , unloadList.get(i).getId());
 		}
 		logger.info("下载完成");
 	}

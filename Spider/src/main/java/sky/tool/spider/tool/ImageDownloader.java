@@ -71,7 +71,6 @@ public class ImageDownloader
 		HttpGet httpget = new HttpGet(imageUrl);
 		httpget.setHeader("Referer", "http://www.google.com");
 
-		//System.out.println("executing request " + httpget.getURI());
 		CloseableHttpResponse response = httpclient.execute(httpget);
 
 		try
@@ -95,7 +94,6 @@ public class ImageDownloader
 			response.close();
 
 		}
-		this.destroyApacheHttpClient();
 
 	}
 }

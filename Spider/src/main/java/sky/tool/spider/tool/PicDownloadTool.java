@@ -34,38 +34,47 @@ public class PicDownloadTool
 		catch (java.net.SocketTimeoutException e) 
 		{
 			logger.error("超时，下载" + id + "失败");
+			inFile.delete();
 		}
 		catch (javax.net.ssl.SSLHandshakeException e) 
 		{
 			logger.error("远端服务器关闭连接， 下载" + id + "失败");
+			inFile.delete();
 		}
 		catch (javax.net.ssl.SSLProtocolException e) 
 		{
 			logger.error("ssl原因，下载" + id + "失败");
+			inFile.delete();
 		}
 		catch (java.net.SocketException e) 
 		{
 			logger.error("socket问题，下载" + id + "失败");
+			inFile.delete();
 		} 
 		catch (ClientProtocolException e)
 		{
 			logger.error("Client问题，下载" + id + "失败");
-		} catch (IOException e)
+			inFile.delete();
+		} 
+		catch (IOException e)
 		{
 			logger.error("IO问题，下载" + id + "失败");
+			inFile.delete();
 			e.printStackTrace();
 		}
 		catch (java.lang.IllegalStateException e) 
 		{
 			logger.error("ConnetionPool原因，下载" + id + "失败");
+			inFile.delete();
 		}
 		catch (Exception e) 
 		{
 			logger.error("未知原因，下载" + id + "失败" , e);
+			inFile.delete();
 		}
 		finally 
 		{
-			if(inFile.length() > 1024)
+			if(inFile.exists() && inFile.length() > 1024)
 			{
 				puService.downloadMark(id, inFile.getAbsolutePath());
 				logger.info("下载" + id + "成功");
