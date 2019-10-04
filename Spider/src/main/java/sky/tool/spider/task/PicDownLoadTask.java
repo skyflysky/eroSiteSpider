@@ -9,12 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import sky.tool.spider.entity.PicUrl;
 import sky.tool.spider.service.PicUrlService;
 import sky.tool.spider.tool.PicDownloadTool;
-
+@ConditionalOnProperty(prefix="work" , name = "mode" ,havingValue = "download")
 @Component
 public class PicDownLoadTask implements ApplicationRunner
 {
@@ -22,9 +23,6 @@ public class PicDownLoadTask implements ApplicationRunner
 	
 	@Value("${pic.storage}")
 	private String storage;
-	
-	@Value("${work.mode}")
-	private String workMode;
 	
 	@Value("${download.mode}")
 	private String downloadMode;
@@ -38,7 +36,7 @@ public class PicDownLoadTask implements ApplicationRunner
 	@Override
 	public void run(ApplicationArguments args) throws Exception
 	{
-		if(workMode.equals("download") && downloadMode.equals("pic"))
+		if(downloadMode.equals("pic"))
 		{
 			doDownload();
 		}

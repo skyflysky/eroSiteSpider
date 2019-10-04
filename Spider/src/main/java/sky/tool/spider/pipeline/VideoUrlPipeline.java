@@ -1,7 +1,6 @@
 package sky.tool.spider.pipeline;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import javax.transaction.Transactional;
@@ -68,6 +67,7 @@ public class VideoUrlPipeline implements Pipeline
 				logger.error("更改页面打开状态失败, url:'" + rowUrl + "'");
 				return;
 			}
+			logger.info("新增可下载视频:'" + magnate +"'");
 			
 		} 
 		catch (NumberFormatException e)

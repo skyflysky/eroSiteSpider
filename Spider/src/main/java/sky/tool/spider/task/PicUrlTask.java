@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import sky.tool.spider.entity.PicPage;
@@ -15,7 +16,7 @@ import sky.tool.spider.pipeline.PicUrlPipeLine;
 import sky.tool.spider.processor.PicUrlProcessor;
 import sky.tool.spider.service.PicPageService;
 import us.codecraft.webmagic.Spider;
-
+@ConditionalOnProperty(prefix="work" , name = "mode" ,havingValue = "grab")
 @Component
 public class PicUrlTask implements ApplicationRunner
 {
@@ -23,9 +24,6 @@ public class PicUrlTask implements ApplicationRunner
 	
 	@Value("${target.domain}")
 	private String domain;
-	
-	@Value("${work.mode}")
-	private String workMode;
 	
 	@Value("${grab.mode}")
 	private String grabMode;
@@ -42,7 +40,7 @@ public class PicUrlTask implements ApplicationRunner
 	@Override
 	public void run(ApplicationArguments args) throws Exception
 	{
-		if(workMode.equals("grab") && grabMode.equals("purl"))
+		if(grabMode.equals("purl"))
 		{
 			doSpider();
 		}

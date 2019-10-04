@@ -57,6 +57,9 @@ public class PicPage
 	@Column(nullable = true)
 	private Integer picCount;
 	
+	@Column(nullable = true)
+	private Integer readCount;
+	
 	@OneToMany(mappedBy = "page" , cascade = { CascadeType.REFRESH, CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE },fetch = FetchType.LAZY )
 	private Set<PicUrl> pics;
 	
@@ -170,6 +173,16 @@ public class PicPage
 		this.picCount = picCount;
 	}
 
+	public Integer getReadCount()
+	{
+		return readCount;
+	}
+
+	public void setReadCount(Integer readCount)
+	{
+		this.readCount = readCount;
+	}
+
 	public Set<PicUrl> getPics()
 	{
 		return pics;
@@ -198,6 +211,7 @@ public class PicPage
 		this.openAble = false;
 		this.retryCount = 0;
 		this.picCount = -1;
+		this.readCount = 0;
 	}
 
 	

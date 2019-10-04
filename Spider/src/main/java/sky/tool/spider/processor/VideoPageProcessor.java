@@ -26,8 +26,16 @@ public class VideoPageProcessor implements PageProcessor
 	public void process(Page page)
 	{
 		logger.info("开始处理页面:'" + page.getUrl() + "'");
-		List<String> urls = page.getHtml().css("#tpl-img-content > li > a:nth-child(1)").links().all();
-		page.putField("urls", urls);
+		if(!page.getUrl().toString().contains("index/home"))
+		{
+			List<String> urls = page.getHtml().css("#tpl-img-content > li > a:nth-child(1)").links().all();
+			page.putField("urls", urls);
+		}
+		else
+		{
+			List<String> urls = page.getHtml().css("li.content-item > a:nth-child(1)").links().all();
+			page.putField("urls", urls);
+		}
 		logger.info("页面:'" + page.getUrl() + "'处理完成");
 	}
 	
