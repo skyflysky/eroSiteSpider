@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 
-import sky.tool.spider.service.PicUrlService;
+import sky.tool.spider.service.PictureService;
 
 @Component
 @EnableAsync
@@ -19,7 +19,7 @@ public class PicDownloadTool
 	Logger logger = Logger.getLogger(getClass());
 
 	@Autowired
-	PicUrlService puService;
+	PictureService pictureService;
 
 	@Async
 	public void download(String targetUrl, File inFile, Long id)
@@ -76,7 +76,7 @@ public class PicDownloadTool
 		{
 			if(inFile.exists() && inFile.length() > 1024)
 			{
-				puService.downloadMark(id, inFile.getAbsolutePath());
+				pictureService.markPicUrlDownloaded(id, inFile.getAbsolutePath());
 				logger.info("下载" + id + "成功");
 			}
 			else

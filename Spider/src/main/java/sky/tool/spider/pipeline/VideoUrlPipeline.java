@@ -11,8 +11,7 @@ import org.springframework.stereotype.Component;
 
 import sky.tool.spider.entity.VideoPage;
 import sky.tool.spider.entity.VideoUrl;
-import sky.tool.spider.service.VideoPageService;
-import sky.tool.spider.service.VideoUrlServcie;
+import sky.tool.spider.service.VideoService;
 import sky.tool.spider.utils.SpringUtil;
 import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Task;
@@ -25,10 +24,7 @@ public class VideoUrlPipeline implements Pipeline
 	Logger logger = Logger.getLogger(getClass());
 	
 	@Autowired
-	VideoUrlServcie videoUrlService;
-	
-	@Autowired
-	VideoPageService videoPageService;
+	VideoService videoService;
 	
 	@Transactional
 	@Override
@@ -44,7 +40,7 @@ public class VideoUrlPipeline implements Pipeline
 		
 		try
 		{
-			VideoPage videoPage = videoPageService.getVideoPageByWebId(SpringUtil.getWebIdFromUrl(rowUrl , VideoPage.ngateMark));
+			VideoPage videoPage = videoService.getVideoPageByWebId(SpringUtil.getWebIdFromUrl(rowUrl , VideoPage.ngateMark));
 			
 			
 			String type = rowType.substring(rowType.lastIndexOf("：") + 1, rowType.lastIndexOf("<"));
@@ -59,9 +55,9 @@ public class VideoUrlPipeline implements Pipeline
 			
 			String title = SpringUtil.innerGetter(rowTitle);
 			
-			videoUrlService.insert( new VideoUrl(videoPage, magnate, uploadCalendar, type, titlePic, title));
+			videoService.insert( new VideoUrl(videoPage, magnate, uploadCalendar, type, titlePic, title));
 			
-			boolean pageStatus = videoPageService.setOpenAble(true, videoPage);
+			boolean pageStatus = videoService.setVideoOpenAble(true, videoPage);
 			if(pageStatus != true)
 			{
 				logger.error("更改页面打开状态失败, url:'" + rowUrl + "'");

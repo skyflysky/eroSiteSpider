@@ -22,12 +22,11 @@ import sky.tool.spider.dao.PicUrlDao;
 import sky.tool.spider.dto.PicDto;
 import sky.tool.spider.entity.PicPage;
 import sky.tool.spider.entity.PicUrl;
-import sky.tool.spider.service.PicUrlService;
+import sky.tool.spider.service.PictureService;
 
 @Service
-public class PicUrlServiceImpl implements PicUrlService
+public class PictureServiceImpl implements PictureService
 {
-
 	private Logger logger = Logger.getLogger(getClass());
 	
 	@Autowired
@@ -36,20 +35,74 @@ public class PicUrlServiceImpl implements PicUrlService
 	@Autowired
 	PicPageDao ppDao;
 	
+	@SuppressWarnings("restriction")
 	@Override
-	public PicUrl insert(PicUrl picUrl)
+	public PicPage insertPicPage(PicPage picPage) throws com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException , NumberFormatException
+	{
+		return ppDao.save(picPage);
+	}
+
+	@Override
+	public List<PicPage> findAblePage()
+	{
+		Specification<PicPage> spec = new Specification<PicPage>()
+		{
+			private static final long serialVersionUID = -8965663983816413434L;
+
+			@Override
+			public Predicate toPredicate(Root<PicPage> root, CriteriaQuery<?> cq, CriteriaBuilder cb)
+			{
+				List<Predicate> pList = new ArrayList<Predicate>();
+				
+				pList.add(cb.equal(root.get("openAble").as(Boolean.class), false));
+				pList.add(cb.lessThanOrEqualTo(root.get("retryCount").as(Integer.class), 3));
+				
+				Predicate[] pArray = new Predicate[pList.size()];
+				pList.toArray(pArray);
+				return cb.and(pArray);
+			}
+		};
+		return ppDao.findAll(spec);
+	}
+
+	@Override
+	public boolean setPicPageOpenAble(boolean openAble, PicPage picPage)
+	{
+		picPage.setOpenAble(openAble);
+		PicPage pp = ppDao.save(picPage);
+		return pp.getOpenAble();
+	}
+
+	@Override
+	public PicPage getPicPageByWebId(Integer webId)
+	{
+		PicPage pp = ppDao.findOneByWebId(webId);
+		pp.setRetryCount(pp.getRetryCount() + 1);
+		return ppDao.save(pp);
+	}
+
+	@Override
+	public int setPicPageCount(int picCount, PicPage picPage)
+	{
+		picPage.setPicCount(picCount);
+		PicPage pp = ppDao.save(picPage);
+		return pp.getPicCount();
+	}
+	
+	@Override
+	public PicUrl insertPicUrl(PicUrl picUrl)
 	{
 		return puDao.save(picUrl);
 	}
 
 	@Override
-	public List<PicUrl> getUnLoad()
+	public List<PicUrl> getUnLoadPicUrl()
 	{
 		return puDao.findByDawnload(false);
 	}
 
 	@Override
-	public boolean downloadMark(Long id , String path)
+	public boolean markPicUrlDownloaded(Long id , String path)
 	{
 		PicUrl picUrl = puDao.getOne(id);
 		picUrl.setLocalPath(path);
@@ -58,7 +111,7 @@ public class PicUrlServiceImpl implements PicUrlService
 	}
 
 	@Override
-	public List<PicDto> getLoaded(Long id)
+	public List<PicDto> getLoadedPicDto(Long id)
 	{
 		return getPicUrlList(ppDao.getOne(id));
 	}
@@ -105,7 +158,7 @@ public class PicUrlServiceImpl implements PicUrlService
 	}
 
 	@Override
-	public List<PicDto> getNext(Long id)
+	public List<PicDto> getNextPicDto(Long id)
 	{
 		PicPage pp = getNextPage(ppDao.getOne(id));
 		return getPicUrlList(pp);
@@ -151,6 +204,4 @@ public class PicUrlServiceImpl implements PicUrlService
 			e.printStackTrace();
 		}
 	}
-	
-	
 }

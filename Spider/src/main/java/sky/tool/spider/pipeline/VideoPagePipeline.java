@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 import sky.tool.spider.entity.VideoPage;
-import sky.tool.spider.service.VideoPageService;
+import sky.tool.spider.service.VideoService;
 import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.pipeline.Pipeline;
@@ -22,7 +22,7 @@ public class VideoPagePipeline implements Pipeline
 	private Logger logger = Logger.getLogger(getClass());
 	
 	@Autowired
-	VideoPageService videoPageService;
+	VideoService videoService;
 	
 	@Override
 	public void process(ResultItems resultItems, Task task)
@@ -38,7 +38,7 @@ public class VideoPagePipeline implements Pipeline
 				VideoPage vp = null;
 				try
 				{
-					vp = videoPageService.insertVideoPage(url);
+					vp = videoService.insertVideoPage(url);
 					if(vp != null && vp.getId() != null)
 					{
 						logger.info("页面" + vp.getUrl() +"抓取成功");
@@ -69,7 +69,7 @@ public class VideoPagePipeline implements Pipeline
 		logger.info(url);
 		try
 		{
-			return videoPageService.insertVideoPage(url);
+			return videoService.insertVideoPage(url);
 		} catch (MySQLIntegrityConstraintViolationException e)
 		{
 			e.printStackTrace();

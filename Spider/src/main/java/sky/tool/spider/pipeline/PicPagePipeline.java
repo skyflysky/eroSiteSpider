@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 import sky.tool.spider.entity.PicPage;
-import sky.tool.spider.service.PicPageService;
+import sky.tool.spider.service.PictureService;
 import sky.tool.spider.utils.SpringUtil;
 import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Task;
@@ -25,7 +25,7 @@ public class PicPagePipeline implements Pipeline
 	Logger logger = Logger.getLogger(getClass());
 	
 	@Autowired
-	PicPageService ppService;
+	PictureService pictureService;
 	
 	@Override
 	public void process(ResultItems resultItems, Task task)
@@ -44,7 +44,7 @@ public class PicPagePipeline implements Pipeline
 				Calendar uploadDay = Calendar.getInstance();
 				uploadDay.setTime(SpringUtil.ymdFomat().parse(uploadDate));
 				
-				PicPage p = ppService.insert(new PicPage(picUrls, urls, title, uploadDay , SpringUtil.innerGetter(type).trim()));
+				PicPage p = pictureService.insertPicPage(new PicPage(picUrls, urls, title, uploadDay , SpringUtil.innerGetter(type).trim()));
 				if(p != null && p.getId() != null)
 				{
 					logger.info("页面" + urls + "抓取成功");

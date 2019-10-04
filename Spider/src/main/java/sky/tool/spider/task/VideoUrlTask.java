@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import sky.tool.spider.entity.VideoPage;
 import sky.tool.spider.pipeline.VideoUrlPipeline;
 import sky.tool.spider.processor.VideoUrlProcessor;
-import sky.tool.spider.service.VideoPageService;
+import sky.tool.spider.service.VideoService;
 import us.codecraft.webmagic.Spider;
 @ConditionalOnProperty(prefix="work" , name = "mode" ,havingValue = "grab")
 @Component
@@ -29,7 +29,7 @@ public class VideoUrlTask implements ApplicationRunner
 	private String grabMode;
 	
 	@Autowired
-	VideoPageService vpSerivce;
+	VideoService videoSerivce;
 	
 	@Autowired
 	VideoUrlProcessor vuProcessor;
@@ -40,7 +40,7 @@ public class VideoUrlTask implements ApplicationRunner
 	public void doSpider()
 	{
 		logger.info("开始爬具体的网页页面");
-		List<VideoPage> vpList = vpSerivce.findAblePage();
+		List<VideoPage> vpList = videoSerivce.findAblePage();
 		List<String> urlList = new ArrayList<String>();
 		for (VideoPage vp : vpList)
 		{

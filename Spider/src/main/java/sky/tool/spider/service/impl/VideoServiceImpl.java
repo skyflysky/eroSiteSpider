@@ -14,17 +14,28 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import sky.tool.spider.dao.VideoPageDao;
+import sky.tool.spider.dao.VideoUrlDao;
 import sky.tool.spider.entity.VideoPage;
-import sky.tool.spider.service.VideoPageService;
+import sky.tool.spider.entity.VideoUrl;
+import sky.tool.spider.service.VideoService;
 
 @Service
-public class VideoPageServiceImpl implements VideoPageService
+public class VideoServiceImpl implements VideoService
 {
 	@Autowired
-	VideoPageDao vpDao;
+	private VideoPageDao vpDao;
+	
+	@Autowired
+	private VideoUrlDao vudao;
 	
 	private Logger logger = Logger.getLogger(getClass());
-
+	
+	@Override
+	public VideoUrl insert(VideoUrl videoUrl)
+	{
+		return vudao.save(videoUrl);
+	}
+	
 	@SuppressWarnings("restriction")
 	@Override
 	public VideoPage insertVideoPage(String url) throws NumberFormatException, com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException
@@ -36,7 +47,7 @@ public class VideoPageServiceImpl implements VideoPageService
 	}
 	
 	@Override
-	public boolean setOpenAble(boolean openable , VideoPage videoPage)
+	public boolean setVideoOpenAble(boolean openable , VideoPage videoPage)
 	{
 		videoPage.setOpenable(openable);
 		VideoPage vp = vpDao.save(videoPage);

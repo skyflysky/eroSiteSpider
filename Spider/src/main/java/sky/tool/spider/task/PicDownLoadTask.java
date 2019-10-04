@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import sky.tool.spider.entity.PicUrl;
-import sky.tool.spider.service.PicUrlService;
+import sky.tool.spider.service.PictureService;
 import sky.tool.spider.tool.PicDownloadTool;
 @ConditionalOnProperty(prefix="work" , name = "mode" ,havingValue = "download")
 @Component
@@ -31,7 +31,7 @@ public class PicDownLoadTask implements ApplicationRunner
 	PicDownloadTool tool;
 	
 	@Autowired
-	PicUrlService puService;
+	PictureService pictureService;
 	
 	@Override
 	public void run(ApplicationArguments args) throws Exception
@@ -45,7 +45,7 @@ public class PicDownLoadTask implements ApplicationRunner
 	private void doDownload()
 	{
 		logger.info("开始下载");
-		List<PicUrl> unloadList = puService.getUnLoad();
+		List<PicUrl> unloadList = pictureService.getUnLoadPicUrl();
 		int count = unloadList.size();
 		for(int i = 0 ; i < count ; i ++)
 		{

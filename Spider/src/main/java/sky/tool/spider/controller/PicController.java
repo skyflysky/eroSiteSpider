@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import sky.tool.spider.dto.PicDto;
-import sky.tool.spider.service.PicUrlService;
+import sky.tool.spider.service.PictureService;
 @ConditionalOnProperty(prefix="work" , name = "mode" ,havingValue = "enjoy")
 @Controller
 public class PicController
@@ -28,12 +28,12 @@ public class PicController
 	private Logger logger = Logger.getLogger(getClass());
 	
 	@Autowired
-	PicUrlService puService;
+	PictureService pictureService;
 
 	@RequestMapping(value = "showPic")
 	public String getPic(Model model, @RequestParam(required = true) Long id)
 	{
-		List<PicDto> stringList = puService.getLoaded(id);
+		List<PicDto> stringList = pictureService.getLoadedPicDto(id);
 		model.addAttribute("manList", stringList);
 		model.addAttribute("id", stringList.get(0).getPid());
 		return "picUrl";
@@ -42,7 +42,7 @@ public class PicController
 	@RequestMapping(value = "next")
 	public String getNext(Model model, @RequestParam(required = true) Long id)
 	{
-		List<PicDto> stringList = puService.getNext(id);
+		List<PicDto> stringList = pictureService.getNextPicDto(id);
 		model.addAttribute("id", stringList.get(0).getPid());
 		model.addAttribute("manList", stringList);
 		return "picUrl";
@@ -52,7 +52,7 @@ public class PicController
 	@ResponseBody
 	public String disable(Long id)
 	{
-		puService.delePhoto(id);
+		pictureService.delePhoto(id);
 		return "";
 	}
 

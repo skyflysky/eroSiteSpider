@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import sky.tool.spider.entity.PicPage;
 import sky.tool.spider.pipeline.PicUrlPipeLine;
 import sky.tool.spider.processor.PicUrlProcessor;
-import sky.tool.spider.service.PicPageService;
+import sky.tool.spider.service.PictureService;
 import us.codecraft.webmagic.Spider;
 @ConditionalOnProperty(prefix="work" , name = "mode" ,havingValue = "grab")
 @Component
@@ -35,7 +35,7 @@ public class PicUrlTask implements ApplicationRunner
 	PicUrlProcessor puProcessor;
 	
 	@Autowired
-	PicPageService ppService;
+	PictureService ppService;
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception
