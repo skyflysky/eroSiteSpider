@@ -20,11 +20,11 @@ public class ThreadPoolConfig
 		// 设置核心线程数
 		executor.setCorePoolSize(5);
 		// 设置最大线程数
-		executor.setMaxPoolSize(10);
+		executor.setMaxPoolSize(30);
 		// 设置队列容量
 		executor.setQueueCapacity(5);
 		// 设置线程活跃时间（秒）
-		executor.setKeepAliveSeconds(180);
+		executor.setKeepAliveSeconds(60);
 		// 设置默认线程名称
 		executor.setThreadNamePrefix("sky-");
 		// 设置拒绝策略

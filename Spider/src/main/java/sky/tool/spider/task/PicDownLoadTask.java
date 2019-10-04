@@ -62,6 +62,11 @@ public class PicDownLoadTask implements ApplicationRunner
 				logger.info("开始下载" + unloadList.get(i).getId() + "，它是第" + (i + 1)  + "/" + count);
 				tool.download(url,targetFile , unloadList.get(i).getId());
 			} 
+			catch (java.lang.ArrayIndexOutOfBoundsException e) 
+			{
+				logger.error("数组下标越界",e);
+				continue;
+			}
 			catch (Exception e) 
 			{
 				logger.error("未知错误" , e);
