@@ -3,11 +3,7 @@ package sky.tool.spider.task;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
@@ -18,16 +14,8 @@ import sky.tool.spider.service.PictureService;
 import us.codecraft.webmagic.Spider;
 @ConditionalOnProperty(prefix="work" , name = "mode" ,havingValue = "grab")
 @Component
-public class PicUrlTask implements ApplicationRunner
+public class PicUrlTask extends AbstractTask
 {
-	private static Logger logger = Logger.getLogger(VideoUrlTask.class);
-	
-	@Value("${target.domain}")
-	private String domain;
-	
-	@Value("${grab.mode}")
-	private String grabMode;
-	
 	@Autowired
 	PicUrlPipeLine puPipeLine;
 	
@@ -36,17 +24,13 @@ public class PicUrlTask implements ApplicationRunner
 	
 	@Autowired
 	PictureService ppService;
-
-	@Override
-	public void run(ApplicationArguments args) throws Exception
+	
+	boolean isWork()
 	{
-		if(grabMode.equals("purl"))
-		{
-			doSpider();
-		}
+		return grabMode.equals("purl");
 	}
 	
-	public void doSpider()
+	public void doWork()
 	{
 		logger.info("开始抓取图片详情");
 		List<PicPage> readList = ppService.findAblePage(); 

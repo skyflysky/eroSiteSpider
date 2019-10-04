@@ -3,11 +3,7 @@ package sky.tool.spider.task;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
@@ -18,16 +14,8 @@ import sky.tool.spider.service.VideoService;
 import us.codecraft.webmagic.Spider;
 @ConditionalOnProperty(prefix="work" , name = "mode" ,havingValue = "grab")
 @Component
-public class VideoUrlTask implements ApplicationRunner
+public class VideoUrlTask extends AbstractTask
 {
-	private static Logger logger = Logger.getLogger(VideoUrlTask.class);
-	
-	@Value("${target.domain}")
-	private String domain;
-	
-	@Value("${grab.mode}")
-	private String grabMode;
-	
 	@Autowired
 	VideoService videoSerivce;
 	
@@ -37,7 +25,7 @@ public class VideoUrlTask implements ApplicationRunner
 	@Autowired
 	VideoUrlPipeline vuPipeline;
 	
-	public void doSpider()
+	public void doWork()
 	{
 		logger.info("开始爬具体的网页页面");
 		List<VideoPage> vpList = videoSerivce.findAblePage();
@@ -66,12 +54,8 @@ public class VideoUrlTask implements ApplicationRunner
 		logger.info("具体的网页页面爬完了");
 	}
 
-	@Override
-	public void run(ApplicationArguments args) throws Exception
+	boolean isWork()
 	{
-		if (grabMode.equals("vurl"))
-		{
-			doSpider();
-		}
+		return grabMode.equals("vurl");
 	}
 }

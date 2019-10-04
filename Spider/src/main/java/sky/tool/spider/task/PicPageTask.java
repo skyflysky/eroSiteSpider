@@ -3,11 +3,7 @@ package sky.tool.spider.task;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
@@ -16,16 +12,8 @@ import sky.tool.spider.processor.PicPageProcessor;
 import us.codecraft.webmagic.Spider;
 @ConditionalOnProperty(prefix="work" , name = "mode" ,havingValue = "grab")
 @Component
-public class PicPageTask implements ApplicationRunner
+public class PicPageTask extends AbstractTask
 {
-	private static Logger logger = Logger.getLogger(VideoPageTask.class);
-
-	@Value("${target.domain}")
-	private String domain;
-
-	@Value("${grab.mode}")
-	private String grabMode;
-
 	@Autowired
 	PicPageProcessor ppProcessor;
 
@@ -43,16 +31,12 @@ public class PicPageTask implements ApplicationRunner
 			"%e5%8d%a1%e9%80%9a%e5%8a%a8%e6%bc%ab"
 		};
 	
-	@Override
-	public void run(ApplicationArguments args) throws Exception
+	boolean isWork()
 	{
-		if(grabMode.equals("ppage"))
-		{
-			doSpider();
-		}
+		return grabMode.equals("ppage");
 	}
-
-	public void doSpider()
+	
+	public void doWork()
 	{
 		logger.info("开始爬图片列表页");
 		List<String> urlList = new ArrayList<String>();

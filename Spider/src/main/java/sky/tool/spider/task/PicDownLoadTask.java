@@ -4,11 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
@@ -17,32 +13,20 @@ import sky.tool.spider.service.PictureService;
 import sky.tool.spider.tool.PicDownloadTool;
 @ConditionalOnProperty(prefix="work" , name = "mode" ,havingValue = "download")
 @Component
-public class PicDownLoadTask implements ApplicationRunner
+public class PicDownLoadTask extends AbstractTask
 {
-	private Logger logger = Logger.getLogger(getClass());
-	
-	@Value("${pic.storage}")
-	private String storage;
-	
-	@Value("${download.mode}")
-	private String downloadMode;
-	
 	@Autowired
 	PicDownloadTool tool;
 	
 	@Autowired
 	PictureService pictureService;
 	
-	@Override
-	public void run(ApplicationArguments args) throws Exception
+	boolean isWork()
 	{
-		if(downloadMode.equals("pic"))
-		{
-			doDownload();
-		}
+		return downloadMode.equals("pic");
 	}
 
-	private void doDownload()
+	void doWork()
 	{
 		logger.info("开始下载");
 		List<PicUrl> unloadList = pictureService.getUnLoadPicUrl();
