@@ -31,6 +31,9 @@ public class PicUrl
 	
 	@Column(nullable = true , columnDefinition = "text")
 	private String localPath;
+	
+	@Column(nullable = true)
+	private Boolean Sideways;
 
 	public Long getId()
 	{
@@ -82,6 +85,16 @@ public class PicUrl
 		this.localPath = localPath;
 	}
 
+	public Boolean getSideways()
+	{
+		return Sideways;
+	}
+
+	public void setSideways(Boolean sideways)
+	{
+		Sideways = sideways;
+	}
+
 	public PicUrl()
 	{
 		super();
@@ -94,5 +107,6 @@ public class PicUrl
 		this.url = url;
 		this.dawnload = false;
 		this.localPath = null;
+		this.Sideways = null;
 	}
 }

@@ -23,6 +23,7 @@ import sky.tool.spider.dto.PicDto;
 import sky.tool.spider.entity.PicPage;
 import sky.tool.spider.entity.PicUrl;
 import sky.tool.spider.service.PictureService;
+import sky.tool.spider.utils.SpringUtil;
 
 @Service
 public class PictureServiceImpl implements PictureService
@@ -104,9 +105,17 @@ public class PictureServiceImpl implements PictureService
 	@Override
 	public boolean markPicUrlDownloaded(Long id , String path)
 	{
-		PicUrl picUrl = puDao.getOne(id);
-		picUrl.setLocalPath(path);
-		picUrl.setDawnload(true);
+		PicUrl picUrl = null;
+		try
+		{
+			picUrl = puDao.getOne(id);
+			picUrl.setLocalPath(path);
+			picUrl.setDawnload(true);
+			picUrl.setSideways(SpringUtil.isPictureSideways(new File(path)));
+		} catch (Exception e)
+		{
+			logger.error("更新图片页时抛出异常" , e);
+		}
 		return puDao.save(picUrl).getDawnload();
 	}
 
