@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import sky.tool.spider.dao.PicUrlDao;
 import sky.tool.spider.entity.PicUrl;
 
-@Component
+//@Component
 public class TempTask implements ApplicationRunner
 {
 	@Autowired
