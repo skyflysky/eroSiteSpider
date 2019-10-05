@@ -56,6 +56,6 @@ public class VideoUrlTask extends AbstractTask
 
 	boolean isWork()
 	{
-		return grabMode.equals("vurl");
+		return "vurl".equals(grabMode);
 	}
 }

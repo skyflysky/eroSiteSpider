@@ -33,7 +33,7 @@ public class PicPageTask extends AbstractTask
 	
 	boolean isWork()
 	{
-		return grabMode.equals("ppage");
+		return "ppage".equals(grabMode);
 	}
 	
 	public void doWork()

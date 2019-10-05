@@ -27,7 +27,7 @@ public class PicUrlTask extends AbstractTask
 	
 	boolean isWork()
 	{
-		return grabMode.equals("purl");
+		return "purl".equals(grabMode);
 	}
 	
 	public void doWork()

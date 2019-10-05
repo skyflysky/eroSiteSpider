@@ -23,7 +23,7 @@ public class PicDownLoadTask extends AbstractTask
 	
 	boolean isWork()
 	{
-		return downloadMode.equals("pic");
+		return "pic".equals(downloadMode);
 	}
 
 	void doWork()

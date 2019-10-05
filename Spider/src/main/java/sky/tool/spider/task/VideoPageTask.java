@@ -34,7 +34,7 @@ public class VideoPageTask extends AbstractTask
 	
 	boolean isWork()
 	{
-		return grabMode.equals("vpage");
+		return "vpage".equals(grabMode);
 	}
 	
 	public void doWork()

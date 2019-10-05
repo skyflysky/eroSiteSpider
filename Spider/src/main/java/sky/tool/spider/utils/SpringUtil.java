@@ -95,6 +95,8 @@ public class SpringUtil implements ApplicationContextAware
 	{
 		FileInputStream fis = new FileInputStream(file);
 		BufferedImage bi = ImageIO.read(fis);
-		return bi.getWidth() > bi.getHeight();
+		boolean result = bi.getWidth() > bi.getHeight();
+		fis.close();
+		return result; 
 	}
 }
