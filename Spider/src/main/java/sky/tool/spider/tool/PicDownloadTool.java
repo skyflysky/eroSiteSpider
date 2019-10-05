@@ -31,6 +31,10 @@ public class PicDownloadTool
 			imageDownloader.initApacheHttpClient();
 			imageDownloader.fetchContent(targetUrl, inFile);
 		} 
+		catch (java.lang.IllegalArgumentException e) 
+		{
+			logger.error("参数错误，下载" + id + "失败");
+		}
 		catch (java.net.SocketTimeoutException e) 
 		{
 			logger.error("超时，下载" + id + "失败");
@@ -58,9 +62,15 @@ public class PicDownloadTool
 		} 
 		catch (IOException e)
 		{
-			logger.error("IO问题，下载" + id + "失败");
 			inFile.delete();
-			e.printStackTrace();
+			if(e.getLocalizedMessage().contains("error code = 404"))
+			{
+				logger.error("404问题，下载" + id + "失败");
+			}
+			else
+			{
+				e.printStackTrace();
+			}
 		}
 		catch (java.lang.IllegalStateException e) 
 		{

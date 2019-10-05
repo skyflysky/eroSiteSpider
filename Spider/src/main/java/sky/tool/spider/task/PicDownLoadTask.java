@@ -2,7 +2,9 @@ package sky.tool.spider.task;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -30,6 +32,7 @@ public class PicDownLoadTask extends AbstractTask
 	{
 		logger.info("开始下载");
 		List<PicUrl> unloadList = pictureService.getUnLoadPicUrl();
+		Set<Long> errorId = new HashSet<>();
 		int count = unloadList.size();
 		for(int i = 0 ; i < count ; i ++)
 		{
@@ -49,31 +52,42 @@ public class PicDownLoadTask extends AbstractTask
 				logger.error("数组下标越界",e);
 				continue;
 			}
+			catch (IOException e) 
+			{
+				if(!e.getLocalizedMessage().contains("文件名、目录名"))
+				{
+					logger.error("未知IO错误" ,e);
+				}
+				else
+				{
+					logger.error("尝试创建本地文件id:" + unloadList.get(i).getId() +"时出错");
+					errorId.add(unloadList.get(i).getId());
+				}
+			}
 			catch (Exception e) 
 			{
 				logger.error("未知错误" , e);
 				continue;
 			}
 		}
+		logger.info("以下id有错误");
+		for(Long id : errorId)
+		{
+			logger.error(id);
+		}
 		logger.info("下载完成");
 	}
 	
-	private File makeDir(File fatherFile, String[] storageTree, int i)
+	private File makeDir(File fatherFile, String[] storageTree, int i) throws IOException
 	{
 		File node = new File(fatherFile , storageTree[i]);
 		if(i == storageTree.length - 1)
 		{
-			if(!node.exists())
+			if(node.exists())
 			{
-				try
-				{
-					node.createNewFile();
-				} 
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
+				node.delete();
 			}
+			node.createNewFile();
 			return node;
 		}
 		else
