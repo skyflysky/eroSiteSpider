@@ -1,5 +1,6 @@
 package sky.tool.spider.service;
 
+import java.util.Calendar;
 import java.util.List;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
@@ -19,4 +20,8 @@ public interface VideoService
 	VideoPage getVideoPageByWebId(Integer webId);
 	
 	VideoUrl insert(VideoUrl videoUrl);
+
+	List<VideoUrl> unloadVideo(Calendar lastTime);
+
+	boolean downloadUrl(VideoUrl vu);
 }

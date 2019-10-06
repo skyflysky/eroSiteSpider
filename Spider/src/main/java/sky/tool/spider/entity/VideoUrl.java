@@ -147,4 +147,9 @@ public class VideoUrl
 		this.type = type;
 		this.updateTime = Calendar.getInstance();
 	}
+
+	public VideoUrl()
+	{
+		super();
+	}
 }

@@ -1,6 +1,7 @@
 package sky.tool.spider.service.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -18,6 +19,7 @@ import sky.tool.spider.dao.VideoUrlDao;
 import sky.tool.spider.entity.VideoPage;
 import sky.tool.spider.entity.VideoUrl;
 import sky.tool.spider.service.VideoService;
+import sky.tool.spider.utils.SpringUtil;
 
 @Service
 public class VideoServiceImpl implements VideoService
@@ -26,14 +28,14 @@ public class VideoServiceImpl implements VideoService
 	private VideoPageDao vpDao;
 	
 	@Autowired
-	private VideoUrlDao vudao;
+	private VideoUrlDao vuDao;
 	
 	private Logger logger = Logger.getLogger(getClass());
 	
 	@Override
 	public VideoUrl insert(VideoUrl videoUrl)
 	{
-		return vudao.save(videoUrl);
+		return vuDao.save(videoUrl);
 	}
 	
 	@SuppressWarnings("restriction")
@@ -84,5 +86,37 @@ public class VideoServiceImpl implements VideoService
 		};
 		
 		return vpDao.findAll(spec);
+	}
+
+	@Override
+	public List<VideoUrl> unloadVideo(Calendar lastTime)
+	{
+		logger.info("开始查询自" + SpringUtil.ymdFomat().format(lastTime.getTime()) + "至今的数据");
+		Specification<VideoUrl> spec = new Specification<VideoUrl>()
+		{
+			private static final long serialVersionUID = 8721612486207011572L;
+
+			@Override
+			public Predicate toPredicate(Root<VideoUrl> root, CriteriaQuery<?> query, CriteriaBuilder cb)
+			{
+				List<Predicate> pList = new ArrayList<>();
+				
+				pList.add(cb.greaterThanOrEqualTo(root.get("uploadDate").as(Calendar.class), lastTime));
+				pList.add(cb.equal(root.get("downloaded").as(Boolean.class), false));
+				
+				Predicate[] pArray = new Predicate[pList.size()];
+				pList.toArray(pArray);
+				return cb.and(pArray);
+			}
+		};
+		return vuDao.findAll(spec);
+	}
+
+	@Override
+	public boolean downloadUrl(VideoUrl vu)
+	{
+		vu.setDownloaded(true);
+		VideoUrl videoUrl = vuDao.save(vu);
+		return videoUrl.getDownloaded();
 	}
 }
