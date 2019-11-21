@@ -1,5 +1,6 @@
 package sky.tool.spider.entity;
 
+import java.io.IOException;
 import java.util.Calendar;
 
 import javax.persistence.Column;
@@ -8,12 +9,15 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import sun.misc.BASE64Decoder;
+
 @Entity
-@Table(name = "video_url")
+@Table(name = "video_url" , indexes = @Index(columnList = "fileName"))
 public class VideoUrl
 {
 	@Id
@@ -32,6 +36,12 @@ public class VideoUrl
 	 */
 	@Column(columnDefinition="text",nullable=false)
 	private String magnet;
+	
+	/**
+	 * 视频文件的文件名，经解码后得到
+	 */
+	@Column(nullable = true)
+	private String fileName;
 	
 	/**
 	 * 视频的上传日期
@@ -68,7 +78,7 @@ public class VideoUrl
 	 */
 	@Column(columnDefinition = "text" ,nullable = false)
 	private String titlePhoto;
-
+	
 	public Long getId()
 	{
 		return id;
@@ -97,6 +107,16 @@ public class VideoUrl
 	public void setMagnet(String magnet)
 	{
 		this.magnet = magnet;
+	}
+
+	public String getFileName()
+	{
+		return fileName;
+	}
+
+	public void setFileName(String fileName)
+	{
+		this.fileName = fileName;
 	}
 
 	public Calendar getUploadDate()
@@ -170,6 +190,22 @@ public class VideoUrl
 		this.name = name;
 		this.type = type;
 		this.updateTime = Calendar.getInstance();
+		if(magnet.startsWith("thunder://"))
+		{
+			try
+			{
+				String n = new String(new BASE64Decoder().decodeBuffer(magnet.substring(10)));
+				this.fileName = n.substring(n.lastIndexOf('/') + 1 ,n.length() - 2);
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+				this.fileName = null;
+			}
+		}
+		else
+		{
+			this.fileName = null;
+		}
 	}
 
 	public VideoUrl()

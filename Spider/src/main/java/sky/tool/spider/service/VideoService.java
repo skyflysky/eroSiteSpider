@@ -24,4 +24,6 @@ public interface VideoService
 	List<VideoUrl> unloadVideo(Calendar lastTime);
 
 	boolean downloadUrl(VideoUrl vu);
+	
+	VideoUrl getByFileName(String fileName);
 }

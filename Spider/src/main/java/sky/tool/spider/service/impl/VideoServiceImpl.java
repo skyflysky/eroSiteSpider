@@ -119,4 +119,34 @@ public class VideoServiceImpl implements VideoService
 		VideoUrl videoUrl = vuDao.save(vu);
 		return videoUrl.getDownloaded();
 	}
+
+	@Override
+	public VideoUrl getByFileName(String fileName)
+	{
+		List<VideoUrl> list = vuDao.findByFileName(fileName);
+		if(list.size() == 1)
+		{
+			return list.get(0);
+		}
+		else if(list.size() > 1)
+		{
+			logger.error("++++++++++++++++++++++++++++++++++++++++");
+			logger.error("========================================");
+			logger.error("----------------------------------------");
+			logger.error("查询文件:'" + fileName + "'出现重复");
+			for(VideoUrl vu : list)
+			{
+				logger.error(vu.getId() + "出现重复");
+			}
+			logger.error("现在返回的是" + list.get(0).getId() + "的文件名"); 
+			logger.error("----------------------------------------");
+			logger.error("========================================");
+			logger.error("++++++++++++++++++++++++++++++++++++++++");
+			return list.get(0);
+		}
+		else
+		{
+			return null;
+		}
+	}
 }
