@@ -11,7 +11,11 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import sky.tool.spider.utils.SpringUtil;
-
+/**
+ * 文章列表页实体
+ * @author skygd
+ *
+ */
 @Entity
 @Table(name = "novel_page" , uniqueConstraints = {@UniqueConstraint(columnNames = "webId")})
 public class NovelPage
@@ -21,28 +25,51 @@ public class NovelPage
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+	/**
+	 * webId 唯一约束 截取自网页的命名 是网站给的ID
+	 */
 	@Column(nullable = false)
 	private Integer webId;
 	
+	/**
+	 * 所指向的小说详情页的相对路径URL
+	 */
 	@Column(columnDefinition = "text" , nullable = false)
 	private String pageUrl;
 	
+	/**
+	 * 小说的标题
+	 */
 	@Column(columnDefinition = "text" , nullable = false)
 	private String title;
 	
+	/**
+	 * 小说的上传日期
+	 */
 	@Column(nullable = false)
 	private Calendar uploadDate;
 	
+	/**
+	 * 小说的抓取日期
+	 */
 	@Column(nullable = false)
 	private Calendar grabTime;
 	
+	/**
+	 * 所指向的小说详情页是否能打开
+	 */
 	@Column(nullable = false)
 	private Boolean openAble;
 	
+	/**
+	 * 尝试打开小说详情页的次数
+	 */
 	@Column(nullable = false)
 	private Integer retryCount;
 	
+	/**
+	 * 小说的类型
+	 */
 	@Column(nullable = false)
 	private String type;
 

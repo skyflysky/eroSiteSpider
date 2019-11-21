@@ -11,7 +11,11 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import sky.tool.spider.utils.SpringUtil;
-
+/**
+ * 视频列表页
+ * @author skygd
+ *
+ */
 @Entity
 @Table(name = "video_page" , uniqueConstraints = {@UniqueConstraint(columnNames = "webId")})
 
@@ -23,12 +27,21 @@ public class VideoPage
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	/**
+	 * 指向的页面Url
+	 */
 	@Column(columnDefinition = "text" , nullable = false)
 	private String url;
 	
+	/**
+	 * 指向的页面的WebId
+	 */
 	@Column(nullable = false)
 	private Integer webId;
 	
+	/**
+	 * 抓取的时间
+	 */
 	@Column(nullable = false)
 	private Calendar addTime;
 	

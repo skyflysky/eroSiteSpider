@@ -10,7 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
+/**
+ * 文章详情页的实体类
+ * @author skygd
+ *
+ */
 @Entity
 @Table(name = "novel_url")
 public class NovelUrl
@@ -19,16 +23,28 @@ public class NovelUrl
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	/**
+	 * 当前小说详情页归属于哪个小说列表页
+	 */
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH}, optional = false , fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false , name ="page_id")
 	private NovelPage page;
 	
+	/**
+	 * 小说本体是否已经被下载
+	 */
 	@Column(nullable = false)
 	private Boolean dawnload;
 	
+	/**
+	 * 小说本体的本地绝对路径
+	 */
 	@Column(nullable = false , columnDefinition = "text")
 	private String localPath;
 	
+	/**
+	 * 小说本地的大小，过小的小说将不会被保存
+	 */
 	@Column(nullable = false)
 	private Long size;
 

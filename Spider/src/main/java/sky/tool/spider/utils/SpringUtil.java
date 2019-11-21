@@ -73,6 +73,12 @@ public class SpringUtil implements ApplicationContextAware
 		return "";
 	}
 	
+	/**
+	 * jsoup获取html元素中指定的属性值
+	 * @param HtmlElement html元素的字符串
+	 * @param attrName 属性名
+	 * @return
+	 */
 	public static String attGetter(String HtmlElement , String attrName)
 	{
 		Document document = Jsoup.parse(HtmlElement);

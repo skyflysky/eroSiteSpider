@@ -20,28 +20,52 @@ public class VideoUrl
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	/**
+	 * 对应哪个页面
+	 */
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="page_Id")
 	private VideoPage videoPage;
 	
+	/**
+	 * 视频详情的链接页面
+	 */
 	@Column(columnDefinition="text",nullable=false)
 	private String magnet;
 	
+	/**
+	 * 视频的上传日期
+	 */
 	@Column(nullable = false)
 	private Calendar uploadDate;
 	
+	/**
+	 * 更新的时间
+	 */
 	@Column(nullable = false)
 	private Calendar updateTime;
 	
+	/**
+	 * 视频是否已经添加到下载
+	 */
 	@Column(nullable = false)
 	private Boolean downloaded;
 	
+	/**
+	 * 视频的类型
+	 */
 	@Column(nullable = false)
 	private String type;
 	
+	/**
+	 * 视频的标题
+	 */
 	@Column(columnDefinition = "text" ,nullable = false)
 	private String name;
 	
+	/**
+	 * 视频的封面图
+	 */
 	@Column(columnDefinition = "text" ,nullable = false)
 	private String titlePhoto;
 

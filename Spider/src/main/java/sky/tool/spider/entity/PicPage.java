@@ -15,7 +15,11 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import sky.tool.spider.utils.SpringUtil;
-
+/**
+ * 图片列表页实体
+ * @author skygd
+ *
+ */
 @Entity
 @Table(name = "pic_page" , uniqueConstraints = {@UniqueConstraint(columnNames = "webId")})
 
@@ -26,37 +30,69 @@ public class PicPage
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+	/**
+	 * 列表页对应的webId 由被抓取的页面得到
+	 */
 	@Column(nullable = false)
 	private Integer webId;
 	
+	/**
+	 * 封面图对应的Url
+	 */
 	@Column(columnDefinition = "text" , nullable = false)
 	private String picUrl;
 	
+	/**
+	 * 指向的详情页的相对路径Url
+	 */
 	@Column(columnDefinition = "text" , nullable = false)
 	private String pageUrl;
 	
+	/**
+	 * 封面标题
+	 */
 	@Column(columnDefinition = "text" , nullable = false)
 	private String title;
 	
+	/**
+	 * 上传的日期
+	 */
 	@Column(nullable = false)
 	private Calendar uploadDate;
 	
+	/**
+	 * 抓取的时间
+	 */
 	@Column(nullable = false)
 	private Calendar grabTime;
 	
+	/**
+	 * 对应的图片详情页 是否能打开
+	 */
 	@Column(nullable = false)
 	private Boolean openAble;
 	
+	/**
+	 * 尝试打开对应图片详情页的次数
+	 */
 	@Column(nullable = false)
 	private Integer retryCount;
 	
+	/**
+	 * 图片的风格
+	 */
 	@Column(nullable = false)
 	private String type;
 	
+	/**
+	 * 这个页面对应页面有多少张图片
+	 */
 	@Column(nullable = true)
 	private Integer picCount;
 	
+	/**
+	 * 这个页面被阅读了几次
+	 */
 	@Column(nullable = true)
 	private Integer readCount;
 	

@@ -31,16 +31,16 @@ public class PicPagePipeline implements Pipeline
 	public void process(ResultItems resultItems, Task task)
 	{
 		List<String> infos = resultItems.get("infos");
-		String type = resultItems.get("type");
-		for(String onePage : infos)
+		String type = resultItems.get("type");//获取图片类型
+		for(String onePage : infos)//循环所有解析到的页面
 		{
 			try
 			{
-				Document document = Jsoup.parse(onePage);
-				String urls = document.getElementsByTag("a").get(0).attr("href");
-				String picUrls = document.getElementsByTag("img").get(0).attr("data-original");
-				String title = document.getElementsByTag("h3").get(0).html();
-				String uploadDate = document.getElementsByTag("span").get(0).html();
+				Document document = Jsoup.parse(onePage);//Jsoup解析页面 dom4j遇到<img>标签会懵逼 非要个</img> ε=(´ο｀*)))唉
+				String urls = document.getElementsByTag("a").get(0).attr("href");//图片详情页面的相对url
+				String picUrls = document.getElementsByTag("img").get(0).attr("data-original");//图片的封面图
+				String title = document.getElementsByTag("h3").get(0).html();//图片的标题
+				String uploadDate = document.getElementsByTag("span").get(0).html();//上传的日期
 				Calendar uploadDay = Calendar.getInstance();
 				uploadDay.setTime(SpringUtil.ymdFomat().parse(uploadDate));
 				
@@ -54,6 +54,7 @@ public class PicPagePipeline implements Pipeline
 					logger.error("页面" + urls + "抓取失败");
 				}
 			} 
+			//webId 是唯一约束
 			catch (MySQLIntegrityConstraintViolationException | org.hibernate.exception.ConstraintViolationException |org.springframework.dao.DataIntegrityViolationException  e)
 			{
 				logger.info("已经被记录过了");

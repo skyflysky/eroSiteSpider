@@ -23,6 +23,12 @@ import sky.tool.spider.dto.PicDto;
 import sky.tool.spider.service.PictureService;
 @ConditionalOnProperty(prefix="work" , name = "mode" ,havingValue = "enjoy")
 @Controller
+/**
+ * 
+ * 浏览图片的控制层
+ * @author skygd
+ *
+ */
 public class PicController
 {
 	private Logger logger = Logger.getLogger(getClass());
@@ -30,6 +36,12 @@ public class PicController
 	@Autowired
 	PictureService pictureService;
 
+	/**
+	 * 直接显示指定图片列表页id的图片
+	 * @param model 
+	 * @param id 图片列表页id
+	 * @return
+	 */
 	@RequestMapping(value = "showPic")
 	public String getPic(Model model, @RequestParam(required = true) Long id)
 	{
@@ -39,6 +51,12 @@ public class PicController
 		return "picUrl";
 	}
 
+	/**
+	 * 显示传入id 的同一个类型的 下一个 图片列表页
+	 * @param model
+	 * @param id 当前页面的id
+	 * @return
+	 */
 	@RequestMapping(value = "next")
 	public String getNext(Model model, @RequestParam(required = true) Long id)
 	{

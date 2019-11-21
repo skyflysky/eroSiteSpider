@@ -11,6 +11,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/**
+ * 图片详情页
+ * @author skygd
+ *
+ */
 @Entity
 @Table(name = "pic_url")
 public class PicUrl
@@ -19,19 +24,34 @@ public class PicUrl
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	/**
+	 * 对应的列表页 这里是多对一 其他都是一对一！！
+	 */
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH}, optional = false , fetch = FetchType.LAZY)
 	@JoinColumn(name = "page_id" , nullable = false)
 	private PicPage page;
 	
+	/**
+	 * 图片的全网URL
+	 */
 	@Column(nullable = false , columnDefinition = "text")
 	private String url;
 	
+	/**
+	 * 图片是否已经被下载
+	 */
 	@Column(nullable = false)
 	private Boolean dawnload;
 	
+	/**
+	 * 本地储存的路径
+	 */
 	@Column(nullable = true , columnDefinition = "text")
 	private String localPath;
 	
+	/**
+	 * 这张图片是否是个宽矮图 true代表宽矮图 false代表窄高图
+	 */
 	@Column(nullable = true)
 	private Boolean Sideways;
 

@@ -1,5 +1,9 @@
 package sky.tool.spider.dto;
-
+/**
+ * 传到前端的数据实体
+ * @author skygd
+ *
+ */
 public class PicDto
 {
 	public Long id;

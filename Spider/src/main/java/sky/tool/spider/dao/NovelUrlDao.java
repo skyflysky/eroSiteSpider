@@ -9,6 +9,11 @@ import sky.tool.spider.entity.NovelUrl;
 public interface NovelUrlDao extends JpaRepository<NovelUrl, Long> , JpaSpecificationExecutor<NovelUrl>
 {
 
+	/**
+	 * 根据列表页来查详情页
+	 * @param novelPage
+	 * @return
+	 */
 	NovelUrl findByPage(NovelPage novelPage);
 
 }

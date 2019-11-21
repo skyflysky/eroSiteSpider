@@ -38,6 +38,7 @@ public class VideoPagePipeline implements Pipeline
 				VideoPage vp = null;
 				try
 				{
+					//直接将获取到的数据插入数据库
 					vp = videoService.insertVideoPage(url);
 					if(vp != null && vp.getId() != null)
 					{
@@ -48,6 +49,7 @@ public class VideoPagePipeline implements Pipeline
 						logger.error("页面" + url + "抓取失败");
 					}
 				} 
+				//webId  唯一约束
 				catch (MySQLIntegrityConstraintViolationException | org.hibernate.exception.ConstraintViolationException |org.springframework.dao.DataIntegrityViolationException  e)
 				{
 					logger.info("网址:'" + url + "'已经被记录过了");
@@ -62,27 +64,5 @@ public class VideoPagePipeline implements Pipeline
 			}
 		}
 		logger.info("数据处理结束");
-	}
-	
-	public VideoPage gdsg(String url)
-	{
-		logger.info(url);
-		try
-		{
-			return videoService.insertVideoPage(url);
-		} catch (MySQLIntegrityConstraintViolationException e)
-		{
-			e.printStackTrace();
-		} catch (NumberFormatException e)
-		{
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	//@PostConstruct
-	public void asd()
-	{
-		gdsg("https://db532.com/xiazai/63853.html");
 	}
 }
