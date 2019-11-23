@@ -40,7 +40,7 @@ public class PicDownLoadTask extends AbstractTask
 			{
 				//Thread.sleep(1000);
 				
-				String url = unloadList.get(i).getUrl();
+				String url = unloadList.get(i).getUrl().replaceAll("\n", "");
 				String[] storageTree = url.split("/");
 				
 				File targetFile = makeDir(new File(storage) , storageTree , 2);
@@ -50,6 +50,7 @@ public class PicDownLoadTask extends AbstractTask
 			catch (java.lang.ArrayIndexOutOfBoundsException e) 
 			{
 				logger.error("数组下标越界",e);
+				errorId.add(unloadList.get(i).getId());
 				continue;
 			}
 			catch (IOException e) 
