@@ -54,6 +54,12 @@ public class PicUrl
 	 */
 	@Column(nullable = true)
 	private Boolean Sideways;
+	
+	/**
+	 * 这张图片尝试下载的重试次数
+	 */
+	@Column(nullable = true)
+	private Integer reTryCount;
 
 	public Long getId()
 	{
@@ -115,6 +121,16 @@ public class PicUrl
 		Sideways = sideways;
 	}
 
+	public Integer getReTryCount()
+	{
+		return reTryCount;
+	}
+
+	public void setReTryCount(Integer reTryCount)
+	{
+		this.reTryCount = reTryCount;
+	}
+
 	public PicUrl()
 	{
 		super();
@@ -128,5 +144,6 @@ public class PicUrl
 		this.dawnload = false;
 		this.localPath = null;
 		this.Sideways = null;
+		this.reTryCount = 0;
 	}
 }

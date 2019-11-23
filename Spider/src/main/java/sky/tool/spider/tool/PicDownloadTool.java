@@ -27,6 +27,7 @@ public class PicDownloadTool
 		logger.debug("线程:'" + Thread.currentThread().getName() + "'开始下载id:'" + id + "'");
 		try
 		{
+			pictureService.tryDownloadPicUrl(id);
 			ImageDownloader imageDownloader = new ImageDownloader();
 			imageDownloader.initApacheHttpClient();
 			imageDownloader.fetchContent(targetUrl, inFile);

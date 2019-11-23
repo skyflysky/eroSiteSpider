@@ -99,7 +99,24 @@ public class PictureServiceImpl implements PictureService
 	@Override
 	public List<PicUrl> getUnLoadPicUrl()
 	{
-		return puDao.findByDawnload(false);
+		Specification<PicUrl> spec = new Specification<PicUrl>()
+		{
+			private static final long serialVersionUID = 492698231191958811L;
+
+			@Override
+			public Predicate toPredicate(Root<PicUrl> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder)
+			{
+				List<Predicate> pList = new ArrayList<>();
+				
+				pList.add(criteriaBuilder.equal(root.get("dawnload").as(Boolean.class), false));
+				pList.add(criteriaBuilder.lessThanOrEqualTo(root.get("reTryCount").as(Integer.class), new Integer(6)));
+				
+				Predicate[] pArray = new Predicate[pList.size()];
+				pList.toArray(pArray);
+				return criteriaBuilder.and(pArray);
+			}
+		};
+		return puDao.findAll(spec);
 	}
 
 	@Override
@@ -212,5 +229,13 @@ public class PictureServiceImpl implements PictureService
 			logger.error("删除图片错误");
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void tryDownloadPicUrl(Long id)
+	{
+		PicUrl pu = puDao.getOne(id);
+		pu.setReTryCount(pu.getReTryCount() + 1);
+		puDao.save(pu);
 	}
 }

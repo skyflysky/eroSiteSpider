@@ -44,7 +44,7 @@ public class PicDownLoadTask extends AbstractTask
 				String[] storageTree = url.split("/");
 				
 				File targetFile = makeDir(new File(storage) , storageTree , 2);
-				logger.info("开始下载" + unloadList.get(i).getId() + "，它是第" + (i + 1)  + "/" + count);
+				logger.info("开始下载" + unloadList.get(i).getId() + "，它是第" + (i + 1)  + "/" + count + "\t它是第" + unloadList.get(i).getReTryCount() + "次尝试下载");
 				tool.download(url,targetFile , unloadList.get(i).getId());
 			} 
 			catch (java.lang.ArrayIndexOutOfBoundsException e) 

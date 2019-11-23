@@ -69,4 +69,6 @@ public interface PictureService
 	int setPicPageCount(int picCount , PicPage picPage);
 	
 	PicPage getPicPageByWebId(Integer webId);
+
+	void tryDownloadPicUrl(Long id);
 }
