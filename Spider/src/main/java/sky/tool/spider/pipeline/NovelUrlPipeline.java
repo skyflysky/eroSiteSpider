@@ -40,17 +40,23 @@ public class NovelUrlPipeline implements Pipeline
 		{
 			//通过Url  获取webId 再获取所属的列表页实体
 			NovelPage np = novelService.getNovelPageByWebId(SpringUtil.getWebIdFromUrl(resultItems.get("url"), NovelPage.ngateMark));
-			File targetFile = getFile(np);//生成小说实体对应的文件
-			writeTxt(resultItems.get("body") , targetFile);//将html文字写入文件
-			if(targetFile.length() < 50)//如果写入完文件过小 则过程中有问题 删掉
+			if (np.getRetryCount() < 4)
 			{
-				targetFile.delete();
-				logger.error(np.getId() + "文件过小忽略不计");
+				File targetFile = getFile(np);//生成小说实体对应的文件
+				writeTxt(resultItems.get("body"), targetFile);//将html文字写入文件
+				if (targetFile.length() < 50)//如果写入完文件过小 则过程中有问题 删掉
+				{
+					targetFile.delete();
+					logger.error(np.getId() + "文件过小忽略不计");
+				} else
+				{
+					novelService.novelUrlDownloed(np, targetFile);//写入完成后保存数据库
+					logger.info("文章" + np.getTitle() + "下载完毕");
+				} 
 			}
 			else
 			{
-				novelService.novelUrlDownloed(np , targetFile);//写入完成后保存数据库
-				logger.info("文章" + np.getTitle() + "下载完毕");
+				logger.info("文章'" + np.getTitle() + "'已经重试过" + np.getRetryCount() + "次，不再尝试");
 			}
 		} 
 		catch (IOException e)
