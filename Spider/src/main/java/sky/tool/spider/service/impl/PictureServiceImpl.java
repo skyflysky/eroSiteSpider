@@ -128,7 +128,7 @@ public class PictureServiceImpl implements PictureService
 			picUrl = puDao.getOne(id);
 			picUrl.setLocalPath(path);
 			picUrl.setDawnload(true);
-			picUrl.setSideways(SpringUtil.isPictureSideways(new File(path)));
+			picUrl.setRate(SpringUtil.getPictureRate(new File(path)));
 		} catch (Exception e)
 		{
 			logger.error("更新图片页时抛出异常" , e);

@@ -50,10 +50,10 @@ public class PicUrl
 	private String localPath;
 	
 	/**
-	 * 这张图片是否是个宽矮图 true代表宽矮图 false代表窄高图
+	 * 图片的宽度/高度值
 	 */
 	@Column(nullable = true)
-	private Boolean Sideways;
+	private Double rate;
 	
 	/**
 	 * 这张图片尝试下载的重试次数
@@ -111,16 +111,16 @@ public class PicUrl
 		this.localPath = localPath;
 	}
 
-	public Boolean getSideways()
+	public Double getRate()
 	{
-		return Sideways;
+		return rate;
 	}
 
-	public void setSideways(Boolean sideways)
+	public void setRate(Double rate)
 	{
-		Sideways = sideways;
+		this.rate = rate;
 	}
-
+	
 	public Integer getReTryCount()
 	{
 		return reTryCount;
@@ -143,7 +143,7 @@ public class PicUrl
 		this.url = url;
 		this.dawnload = false;
 		this.localPath = null;
-		this.Sideways = null;
+		this.rate = new Double("1");
 		this.reTryCount = 0;
 	}
 }

@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 
 import javax.imageio.ImageIO;
@@ -104,5 +105,14 @@ public class SpringUtil implements ApplicationContextAware
 		boolean result = bi.getWidth() > bi.getHeight();
 		fis.close();
 		return result; 
+	}
+
+	public static Double getPictureRate(File file) throws IOException
+	{
+		FileInputStream fis = new FileInputStream(file);
+		BufferedImage bi = ImageIO.read(fis);
+		BigDecimal result = new BigDecimal(bi.getWidth()).divide(new BigDecimal(bi.getHeight()) , 5, BigDecimal.ROUND_HALF_UP);
+		fis.close();
+		return result.doubleValue();
 	}
 }
