@@ -1,12 +1,18 @@
 package sky.tool.spider.service.impl;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
@@ -38,7 +44,22 @@ public class NovelServiceImpl implements NovelService
 	@Override
 	public List<NovelPage> findUnloadPage()
 	{
-		return npDao.findByOpenAble(false);
+		Specification<NovelPage> spec = new Specification<NovelPage>()
+		{
+			private static final long serialVersionUID = -6578547871899978997L;
+
+			@Override
+			public Predicate toPredicate(Root<NovelPage> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder)
+			{
+				List<Predicate> pList = new ArrayList<Predicate>();
+				pList.add(criteriaBuilder.equal(root.get("openAble").as(Boolean.class), false));
+				pList.add(criteriaBuilder.lessThanOrEqualTo(root.get("retryCount").as(Integer.class), new Integer(4)));
+				Predicate[] pArray = new Predicate[pList.size()];
+				pList.toArray(pArray);
+				return criteriaBuilder.and(pArray);
+			}
+		};
+		return npDao.findAll(spec);
 	}
 
 	@Override
