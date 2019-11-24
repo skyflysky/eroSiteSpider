@@ -29,6 +29,7 @@ import sky.tool.spider.service.PictureService;
  * @author skygd
  *
  */
+@RequestMapping(value = "pic")
 public class PicController
 {
 	private Logger logger = Logger.getLogger(getClass());

@@ -36,7 +36,7 @@
 			<img src="${l.url}">
 		</div>
 	</#list>
-	<button><a href="/next?id=${id}">下一个</a></button>
+	<button><a href="/pic/next?id=${id}">下一个</a></button>
 	<script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
 	<script type="text/javascript">
 	 document.onkeydown = function(event) 
@@ -45,10 +45,10 @@
 
          if (e && e.keyCode == 68) 
          { 
-        	 window.location.href="/next?id=${id}";
+        	 window.location.href="/pic/next?id=${id}";
          }
      };
-     $(".avater-box").click(function(){$.post("/disable?id="+this.id ,function(){})});
+     $(".avater-box").click(function(){$.post("/pic/disable?id="+this.id ,function(){})});
 	</script>
 </div>
 </body>
