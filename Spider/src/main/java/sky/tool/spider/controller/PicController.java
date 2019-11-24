@@ -79,7 +79,7 @@ public class PicController
 	{
 		try
 		{
-			URL url = new URL("http://127.0.0.1:43960/ok.txt");
+			URL url = new URL("http://192.168.147.101:43960/pi/ok.txt");
 			HttpURLConnection http = (HttpURLConnection) url.openConnection();
 			InputStream input = http.getInputStream();
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();

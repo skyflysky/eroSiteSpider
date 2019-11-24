@@ -151,7 +151,7 @@ public class PictureServiceImpl implements PictureService
 		{
 			if(pu.getDawnload()) 
 			{
-				stringList.add(new PicDto(pu.getId(), pu.getUrl().replace("https://", "http://127.0.0.1:43960/"), pu.getPage().getId()));
+				stringList.add(new PicDto(pu.getId(), pu.getUrl().replace("https://", "http://192.168.147.101:43960/pi/"), pu.getPage().getId()));
 			}
 		}
 		stringList.sort(getUrlPageSort());
