@@ -30,6 +30,9 @@ body {
       <button id="ne" style="text-align: center; margin-top: 60px ; width: 80% ; height: 50px">下一个</button>
       <script src="http://192.168.147.101:43960/pi/video.min.js"></script> 
       <script type="text/javascript">
+      	console.log("${curr}");
+      	console.log("${name}");
+      	console.log("${netPath}");
 		  //设置中文
 		  videojs.addLanguage('zh-CN', {
 			  "Play": "播放",
@@ -135,7 +138,7 @@ body {
     	{
     		let k = ${curr} + 1;
     		console.log(k);
-    		window.location.href="/video/vi?name=" + k;
+    		window.location.href="/video/video?name=" + k;
     	});
     </script>
 </body>

@@ -33,7 +33,7 @@ public class RenameVideoTask extends AbstractTask
 			{
 				File childFile = new File(files, childFileName);
 				StringBuilder sb = new StringBuilder(childFileName.substring(0, childFileName.lastIndexOf(".")));
-				sb.append("  ");
+				sb.append("__");
 				sb.append(vu.getName());
 				sb.append(childFileName.substring(childFileName.lastIndexOf(".")));
 				File newChildFile = new File(files , sb.toString());
