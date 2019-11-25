@@ -27,7 +27,8 @@ body {
         <source src="${netPath}" type="video/mp4">
         <p class="vjs-no-js"> To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a> </p>
       </video>
-      <button id="ne" style="text-align: center; margin-top: 60px ; width: 80% ; height: 50px">下一个</button>
+      <button id="ne" style="text-align: center; margin: 60px 10% 150px ; width: 80% ; height: 50px">下一个</button>
+      <div id="realP" style="color: white; font-size: 10px">${realPath}</div>
       <script src="http://192.168.147.101:43960/pi/video.min.js"></script> 
       <script type="text/javascript">
 		  //设置中文
@@ -131,6 +132,13 @@ body {
     </div>
     
     <script type="text/javascript">
+    	$("#realP").click(function()
+       	{
+       		console.log("${realPath}");
+       		let ele = document.getElementById('realP');
+       		ele.select();
+       		document.execCommand('copy');  		
+       	})
     	$("#ne").click(function f()
     	{
     		let k = ${curr} + 1;
