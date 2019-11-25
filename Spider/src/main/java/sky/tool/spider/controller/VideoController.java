@@ -20,12 +20,12 @@ public class VideoController
 	{
 		model.addAttribute("curr", name);
 		File f = new File("K:\\food");
+		while (name.length() < 4)
+		{
+			name = "0" + name;
+		}
 		for(String s : f.list())
 		{
-			while (name.length() < 4)
-			{
-				name = "0" + name;
-			}
 			if(s.startsWith(name))
 			{
 				File n = new File(f, s);
