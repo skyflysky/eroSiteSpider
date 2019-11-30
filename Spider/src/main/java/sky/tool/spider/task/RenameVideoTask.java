@@ -36,11 +36,11 @@ public class RenameVideoTask extends AbstractTask
 				sb.append("__");
 				sb.append(vu.getName());
 				sb.append(childFileName.substring(childFileName.lastIndexOf(".")));
-				File newChildFile = new File(files , sb.toString());
+				File newChildFile = new File(files , sb.toString().replace(" ", ""));
 				childFile.renameTo(newChildFile);
 				logger.info("重命名得到文件:" + sb.toString());
 			}
-			else
+			else if(!childFileName.contains("__"))
 			{
 				logger.error("++++++++++++++++++++++++++++++++++++++++");
 				logger.error("========================================");
