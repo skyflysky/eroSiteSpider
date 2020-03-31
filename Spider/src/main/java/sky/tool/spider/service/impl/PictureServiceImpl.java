@@ -129,9 +129,15 @@ public class PictureServiceImpl implements PictureService
 			picUrl.setLocalPath(path);
 			picUrl.setDawnload(true);
 			picUrl.setRate(SpringUtil.getPictureRate(new File(path)));
-		} catch (Exception e)
+		} 
+		catch (Exception e)
 		{
+			if(e instanceof java.io.EOFException || e.getLocalizedMessage().contains("Error reading PNG image data"))
+			{
+				logger.error("图片未下载完整，已经删除" + id);
+			}
 			logger.error("更新图片页时抛出异常" , e);
+			return false;
 		}
 		return puDao.save(picUrl).getDawnload();
 	}

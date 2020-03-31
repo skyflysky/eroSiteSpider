@@ -4,12 +4,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
+import sky.tool.spider.entity.DownloadEntity;
 import sky.tool.spider.entity.PicUrl;
 import sky.tool.spider.service.PictureService;
 import sky.tool.spider.tool.PicDownloadTool;
@@ -17,11 +22,14 @@ import sky.tool.spider.tool.PicDownloadTool;
 @Component
 public class PicDownLoadTask extends AbstractTask
 {
-	@Autowired
+	@Resource(name="de")
 	PicDownloadTool tool;
 	
 	@Autowired
 	PictureService pictureService;
+	
+	@Value("${de.timeout}")
+	Long timeout;
 	
 	boolean isWork()
 	{
@@ -34,6 +42,7 @@ public class PicDownLoadTask extends AbstractTask
 		List<PicUrl> unloadList = pictureService.getUnLoadPicUrl();
 		Set<Long> errorId = new HashSet<>();
 		int count = unloadList.size();
+		tool.start();
 		for(int i = 0 ; i < count ; i ++)
 		{
 			try
@@ -44,8 +53,9 @@ public class PicDownLoadTask extends AbstractTask
 				String[] storageTree = url.split("/");
 				
 				File targetFile = makeDir(new File(storage) , storageTree , 2);
-				logger.info("开始下载" + unloadList.get(i).getId() + "，它是第" + (i + 1)  + "/" + count + "\t它是第" + unloadList.get(i).getReTryCount() + "次尝试下载");
-				tool.download(url,targetFile , unloadList.get(i).getId());
+				logger.info("将" + unloadList.get(i).getId() + "添加到队列，它是第" + (i + 1)  + "/" + count + "\t它是第" + unloadList.get(i).getReTryCount() + "次尝试下载");
+				//tool.download(url,targetFile , unloadList.get(i).getId());
+				tool.add(Optional.of(new DownloadEntity(url, targetFile, unloadList.get(i).getId())));
 			} 
 			catch (java.lang.ArrayIndexOutOfBoundsException e) 
 			{
@@ -71,12 +81,30 @@ public class PicDownLoadTask extends AbstractTask
 				continue;
 			}
 		}
-		logger.info("以下id有错误");
-		for(Long id : errorId)
+		try
 		{
-			logger.error(id);
+			while(!tool.isFinish())
+			{
+				logger.info("当前队列长度:" + tool.getQueueLength());
+				Thread.sleep(timeout);
+			}
+			logger.info("队列已经清空");
+			tool.stop();
+			while(!tool.isStop())
+			{
+				Thread.sleep(timeout);
+			}
+			logger.info("下载完成");
+			logger.info("以下id有错误");
+			for(Long id : errorId)
+			{
+				logger.error(id);
+			}
 		}
-		logger.info("下载完成");
+		catch (InterruptedException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	private File makeDir(File fatherFile, String[] storageTree, int i) throws IOException

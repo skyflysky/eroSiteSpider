@@ -2,29 +2,30 @@ package sky.tool.spider.tool;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 
+import sky.tool.spider.entity.DownloadEntity;
 import sky.tool.spider.service.PictureService;
+import sky.tool.spider.task.QueueExecutor;
 
 @Component
-@EnableAsync
-public class PicDownloadTool
+public class PicDownloadTool extends QueueExecutor<DownloadEntity>
 {
-	Logger logger = Logger.getLogger(getClass());
+	private static final long serialVersionUID = 4452284700284789399L;
+
+	Logger logger = Logger.getLogger(PicDownloadTool.class);
 
 	@Autowired
 	PictureService pictureService;
 
-	@Async
 	public void download(String targetUrl, File inFile, Long id)
 	{
-		logger.debug("线程:'" + Thread.currentThread().getName() + "'开始下载id:'" + id + "'");
+		logger.info("开始下载id:'" + id + "'");
 		try
 		{
 			pictureService.tryDownloadPicUrl(id);
@@ -87,13 +88,36 @@ public class PicDownloadTool
 		{
 			if(inFile.exists() && inFile.length() > 1024)
 			{
-				pictureService.markPicUrlDownloaded(id, inFile.getAbsolutePath());
-				logger.info("下载" + id + "成功");
+				if(pictureService.markPicUrlDownloaded(id, inFile.getAbsolutePath()))
+				{
+					logger.info("下载" + id + "成功");
+				}
+				else
+				{
+					inFile.delete();
+					logger.info(id + "失败");
+				}
 			}
 			else
 			{
 				inFile.delete();
 			}
 		}
+	}
+
+	@Override
+	public void runMission(Optional<DownloadEntity> opt) throws Exception
+	{
+		download(opt.get().getUrl(), opt.get().getFile(), opt.get().getId());
+	}
+	
+	public PicDownloadTool(int thredCount , long timeOut , int queueSizeTimes)
+	{
+		super(thredCount, timeOut, queueSizeTimes);
+	}
+	
+	public PicDownloadTool()
+	{
+		super();
 	}
 }
