@@ -87,7 +87,7 @@ public class Sukebei
 	/**
 	 * 下载后另存的种子路径
 	 */
-	@Column(nullable = true)
+	@Column(nullable = true, columnDefinition="text")
 	private String torrentPath;
 	
 	public Long getId()
