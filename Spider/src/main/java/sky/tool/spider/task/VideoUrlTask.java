@@ -50,7 +50,7 @@ public class VideoUrlTask extends AbstractTask
 		}
 		String[] urls = new String[urlList.size()];
 		urlList.toArray(urls);
-		Spider.create(vuProcessor).addUrl(urls).addPipeline(vuPipeline).thread(10).run();
+		Spider.create(vuProcessor).addUrl(urls).addPipeline(vuPipeline).thread(spiderThredCount).run();
 		logger.info("具体的网页页面爬完了");
 	}
 

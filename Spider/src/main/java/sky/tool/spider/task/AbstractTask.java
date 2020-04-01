@@ -23,6 +23,9 @@ public abstract class AbstractTask implements ApplicationRunner
 	@Value("${grab.mode}")
 	String grabMode;
 	
+	@Value("${spider.thread}")
+	Integer spiderThredCount;
+	
 	abstract void doWork();
 	
 	abstract boolean isWork();

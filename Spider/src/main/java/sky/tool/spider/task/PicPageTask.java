@@ -56,7 +56,7 @@ public class PicPageTask extends AbstractTask
 		}
 		String[] urls = new String[urlList.size()];
 		urlList.toArray(urls);
-		Spider.create(ppProcessor).addUrl(urls).addPipeline(ppPipeline).thread(15).run();
+		Spider.create(ppProcessor).addUrl(urls).addPipeline(ppPipeline).thread(spiderThredCount).run();
 		logger.info("图片列表页爬完了");
 	}
 

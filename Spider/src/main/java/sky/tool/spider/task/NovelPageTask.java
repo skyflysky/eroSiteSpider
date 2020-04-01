@@ -45,7 +45,7 @@ public class NovelPageTask extends AbstractTask
 		List<String> urlList = new ArrayList<String>();
 		for(String thirdPath : thridPaths)
 		{
-			for(int i = 55 ; i >= 1 ; i--)
+			for(int i = 10 ; i >= 1 ; i--)
 			{
 				StringBuilder sb = new StringBuilder("https://");
 				sb.append(domain);
@@ -60,7 +60,7 @@ public class NovelPageTask extends AbstractTask
 		String[] urls = new String[urlList.size()];
 		urlList.toArray(urls);
 		
-		Spider.create(novelPageProcessor).addUrl(urls).addPipeline(novelPagePipLine).thread(25).run();
+		Spider.create(novelPageProcessor).addUrl(urls).addPipeline(novelPagePipLine).thread(spiderThredCount).run();
 		
 		logger.info("小说列表页爬完了");
 	}
