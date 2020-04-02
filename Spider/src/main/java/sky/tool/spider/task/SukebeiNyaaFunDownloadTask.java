@@ -98,15 +98,15 @@ public class SukebeiNyaaFunDownloadTask extends AbstractTask
 	
 	private String windowsFileFilter(String org)
 	{
-		org.replace('\\', ' ');
-		org.replace('/', ' ');
-		org.replace(':', ' ');
-		org.replace('*', ' ');
-		org.replace('?', ' ');
-		org.replace('"', ' ');
-		org.replace('<', ' ');
-		org.replace('>', ' ');
-		org.replace('|', ' ');
+		org = org.replace('\\', ' ');
+		org = org.replace('/', ' ');
+		org = org.replace(':', ' ');
+		org = org.replace('*', ' ');
+		org = org.replace('?', ' ');
+		org = org.replace('"', ' ');
+		org = org.replace('<', ' ');
+		org = org.replace('>', ' ');
+		org = org.replace('|', ' ');
 		if(org.length() > 80)
 		{
 			org = org.substring(0, 80);
