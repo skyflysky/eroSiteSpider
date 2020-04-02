@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import sky.tool.spider.dao.SukebeiDao;
+import sky.tool.spider.dao.SukebeiPageDao;
 import sky.tool.spider.entity.Sukebei;
+import sky.tool.spider.entity.SukebeiPage;
 import sky.tool.spider.service.SukebeiNyaaFunService;
 
 @Service
@@ -23,10 +25,13 @@ public class SukebeiNyaaFunServiceImpl implements SukebeiNyaaFunService
 	SukebeiDao dao;
 	
 	@Autowired
+	SukebeiPageDao pageDao;
+	
+	@Autowired
 	LocalContainerEntityManagerFactoryBean entityManagerFactory;
 
 	@Override
-	public boolean checkExistence(Integer webId)
+	public boolean checkSukebeiExistence(Integer webId)
 	{
 		Sukebei s = dao.findByWebId(webId);
 		return s != null;
@@ -55,6 +60,19 @@ public class SukebeiNyaaFunServiceImpl implements SukebeiNyaaFunService
 		sukebei.setDownloaded(true);
 		sukebei.setTorrentPath(torrentPath);
 		return dao.save(sukebei);
+	}
+
+	@Override
+	public boolean checkSukebeiPageExistence(Integer webId)
+	{
+		SukebeiPage sp = pageDao.findByWebId(webId);
+		return sp != null;
+	}
+
+	@Override
+	public SukebeiPage save(SukebeiPage sukebeiPage)
+	{
+		return pageDao.save(sukebeiPage);
 	}
 
 	

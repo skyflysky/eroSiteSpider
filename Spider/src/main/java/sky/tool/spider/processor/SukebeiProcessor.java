@@ -49,8 +49,6 @@ public class SukebeiProcessor implements PageProcessor
 			innerMap.put("size", tds.get(3).html());
 			
 			//<td class="text-center" data-timestamp="1585634690"></td> 
-			Element e = tds.get(4);
-			
 			innerMap.put("publish", tds.get(4).attr("data-timestamp"));
 			innerList.add(innerMap);
 		}
