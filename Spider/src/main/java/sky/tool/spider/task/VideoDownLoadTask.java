@@ -4,6 +4,7 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.List;
@@ -25,6 +26,9 @@ public class VideoDownLoadTask extends AbstractTask
 {
 	@Value("${lastdate}")
 	String lastdate;
+	
+	@Value("${sukebei.thunderProgramPath}")
+	String thunderProgramPath;
 	
 	@Autowired
 	VideoService videoService;
@@ -48,13 +52,23 @@ public class VideoDownLoadTask extends AbstractTask
 			}
 			List<VideoUrl> urlList = videoService.unloadVideo(lastTime);
 			Scanner scanner = new Scanner(System.in);
-			System.setProperty("java.awt.headless", "false");
-			for(VideoUrl vu : urlList)
+			try
 			{
-				toPast(vu.getMagnet());
-				logger.info("已复制:'" + vu.getName() + "'，按任意键继续");
+				logger.info("开始唤起迅雷，迅雷唤起后，输入任意字符以继续");
+				Runtime.getRuntime().exec(thunderProgramPath);
 				scanner.next();
-				videoService.downloadUrl(vu);
+				for(VideoUrl vu : urlList)
+				{
+					//toPast(vu.getMagnet());
+					Runtime.getRuntime().exec(thunderProgramPath + " " + vu.getMagnet());
+					logger.info("已添加:'" + vu.getName() + "'到迅雷，输入任意字符以继续");
+					scanner.next();
+					videoService.downloadUrl(vu);
+				}
+			}
+			catch (IOException e)
+			{
+				logger.error(e);
 			}
 			scanner.close();
 			logger.info("库存已下载完毕");
@@ -65,7 +79,7 @@ public class VideoDownLoadTask extends AbstractTask
 		}
 	}
 
-	private void toPast(String magnet)
+	public void toPast(String magnet)
 	{
 		Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
         Transferable tText = new StringSelection(magnet);
