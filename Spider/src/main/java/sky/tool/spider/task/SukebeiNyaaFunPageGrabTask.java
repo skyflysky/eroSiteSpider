@@ -41,6 +41,7 @@ public class SukebeiNyaaFunPageGrabTask extends AbstractTask
 		if(max >= min)
 		{
 			List<String> urlList = new ArrayList<>();
+			logger.info("开始准备url");
 			for(int i = min ; i <= max ; i++)
 			{
 				if(! check(i))
@@ -64,7 +65,7 @@ public class SukebeiNyaaFunPageGrabTask extends AbstractTask
 
 	private boolean check(int i)
 	{
-		return service.checkSukebeiPageExistence(i) || service.checkSukebeiExistence(i);
+		return service.checkSukebeiPageExistence(i);
 	}
 
 	@Override

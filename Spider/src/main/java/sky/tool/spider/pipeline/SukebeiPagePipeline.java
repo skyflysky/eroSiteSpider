@@ -28,14 +28,8 @@ public class SukebeiPagePipeline implements Pipeline
 	@Override
 	public void process(ResultItems resultItems, Task task)
 	{
-		logger.info("webId:" + resultItems.get("webId"));
-		logger.info("hasinfo:" + resultItems.get("hasinfo"));
 		if((boolean)resultItems.get("hasinfo"))
 		{
-			logger.info("webName:" + resultItems.get("webName"));
-			logger.info("type:" + resultItems.get("type"));
-			logger.info("publish:" + resultItems.get("publish"));
-			logger.info("hash:" + resultItems.get("hash"));
 			
 			Calendar c = Calendar.getInstance();
 			c.setTimeInMillis((Long.valueOf(resultItems.get("publish")) * 1000));
