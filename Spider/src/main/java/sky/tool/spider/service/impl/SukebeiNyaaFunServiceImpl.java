@@ -75,5 +75,11 @@ public class SukebeiNyaaFunServiceImpl implements SukebeiNyaaFunService
 		return pageDao.save(sukebeiPage);
 	}
 
+	@Override
+	public List<SukebeiPage> getSukebeiPageByWebId(List<Integer> webIds)
+	{
+		return pageDao.findByWebIdIn(webIds);
+	}
+
 	
 }

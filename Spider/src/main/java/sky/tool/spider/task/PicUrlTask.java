@@ -49,7 +49,7 @@ public class PicUrlTask extends AbstractTask
 		}
 		String[] urls = new String[urlList.size()];
 		urlList.toArray(urls);
-		Spider.create(puProcessor).addPipeline(puPipeLine).addUrl(urls).thread(spiderThredCount).run();
+		Spider.create(puProcessor).addPipeline(puPipeLine).addUrl(urls).thread(spiderThredCount).setDownloader(downloader).run();
 		logger.info("图片详情抓取完毕");
 	}
 

@@ -44,7 +44,7 @@ public class NovelUrlTask extends AbstractTask
 		}
 		String[] urls = new String[urlList.size()];
 		urlList.toArray(urls);
-		Spider.create(novelUrlProcessor).addUrl(urls).addPipeline(novelUrlPipline).thread(spiderThredCount).run();
+		Spider.create(novelUrlProcessor).addUrl(urls).addPipeline(novelUrlPipline).thread(spiderThredCount).setDownloader(downloader).run();
 		logger.info("文章详情页抓取完毕");
 	}
 

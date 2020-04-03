@@ -58,7 +58,7 @@ public class VideoPageTask extends AbstractTask
 		}
 		String[] urls = new String[urlList.size()];
 		urlList.toArray(urls);
-		Spider.create(vpProcessor).addUrl(urls).addPipeline(vpPipeline).thread(spiderThredCount).run();
+		Spider.create(vpProcessor).addUrl(urls).addPipeline(vpPipeline).thread(spiderThredCount).setDownloader(downloader).run();
 		logger.info("视频列表页爬完了");
 	}
 }

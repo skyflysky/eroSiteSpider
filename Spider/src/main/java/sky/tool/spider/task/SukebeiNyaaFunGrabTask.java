@@ -42,7 +42,7 @@ public class SukebeiNyaaFunGrabTask extends AbstractTask
 		urlList.add(base);
 		String[] urls = new String[urlList.size()];
 		urlList.toArray(urls);
-		Spider.create(processor).addUrl(urls).addPipeline(pipeline).thread(spiderThredCount).run();
+		Spider.create(processor).addUrl(urls).addPipeline(pipeline).thread(spiderThredCount).setDownloader(downloader).run();
 		logger.info("sukebei爬完了");
 	}
 

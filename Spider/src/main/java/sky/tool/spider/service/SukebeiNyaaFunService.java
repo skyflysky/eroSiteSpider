@@ -18,4 +18,6 @@ public interface SukebeiNyaaFunService
 	List<Sukebei> getSukebeiBySql(String sql);
 	
 	Sukebei setDownloaded(String torrentPath , Sukebei sukebei); 
+	
+	List<SukebeiPage> getSukebeiPageByWebId(List<Integer> webIds);
 }

@@ -60,7 +60,7 @@ public class NovelPageTask extends AbstractTask
 		String[] urls = new String[urlList.size()];
 		urlList.toArray(urls);
 		
-		Spider.create(novelPageProcessor).addUrl(urls).addPipeline(novelPagePipLine).thread(spiderThredCount).run();
+		Spider.create(novelPageProcessor).addUrl(urls).addPipeline(novelPagePipLine).thread(spiderThredCount).setDownloader(downloader).run();
 		
 		logger.info("小说列表页爬完了");
 	}
