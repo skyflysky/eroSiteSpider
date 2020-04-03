@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONArray;
 
+import sky.tool.spider.entity.Sukebei404;
 import sky.tool.spider.entity.SukebeiPage;
 import sky.tool.spider.service.SukebeiNyaaFunService;
 import sky.tool.spider.utils.SpringUtil;
@@ -75,6 +76,11 @@ public class SukebeiPagePipeline implements Pipeline
 			{
 				logger.info("已存在\t" + resultItems.get("webName"));
 			}
+		}
+		else
+		{
+			service.save(new Sukebei404(resultItems.get("webId")));
+			logger.info("没有数据:\t" + resultItems.get("webId"));
 		}
 	}
 }

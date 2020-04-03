@@ -1,18 +1,28 @@
 package sky.tool.spider.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.apache.log4j.Logger;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import sky.tool.spider.dao.Sukebei404Dao;
 import sky.tool.spider.dao.SukebeiDao;
 import sky.tool.spider.dao.SukebeiPageDao;
 import sky.tool.spider.entity.Sukebei;
+import sky.tool.spider.entity.Sukebei404;
 import sky.tool.spider.entity.SukebeiPage;
 import sky.tool.spider.service.SukebeiNyaaFunService;
 
@@ -26,6 +36,9 @@ public class SukebeiNyaaFunServiceImpl implements SukebeiNyaaFunService
 	
 	@Autowired
 	SukebeiPageDao pageDao;
+	
+	@Autowired
+	Sukebei404Dao fourDao;
 	
 	@Autowired
 	LocalContainerEntityManagerFactoryBean entityManagerFactory;
@@ -76,9 +89,69 @@ public class SukebeiNyaaFunServiceImpl implements SukebeiNyaaFunService
 	}
 
 	@Override
-	public List<SukebeiPage> getSukebeiPageByWebId(List<Integer> webIds)
+	public List<Integer> getUndownloadedWebId(int max , int min)
 	{
-		return pageDao.findByWebIdIn(webIds);
+		Specification<SukebeiPage> specp = new Specification<SukebeiPage>()
+		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4525607177507733764L;
+
+			@Override
+			public Predicate toPredicate(Root<SukebeiPage> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder)
+			{
+				Predicate[] pArray = new Predicate[2];
+				pArray[0] = criteriaBuilder.greaterThanOrEqualTo(root.get("webId").as(Integer.class), Integer.valueOf(min));
+				pArray[1] = criteriaBuilder.lessThanOrEqualTo(root.get("webId").as(Integer.class), Integer.valueOf(max));
+				
+				return criteriaBuilder.and(pArray);
+			}
+		};
+		Set<Integer> downloaded = new HashSet<>();
+		for(SukebeiPage sp : pageDao.findAll(specp))
+		{
+			downloaded.add(sp.getWebId());
+		}
+		
+		Specification<Sukebei404> spec4 = new Specification<Sukebei404>()
+		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 578949990697462538L;
+
+			@Override
+			public Predicate toPredicate(Root<Sukebei404> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder)
+			{
+				Predicate[] pArray = new Predicate[2];
+				pArray[0] = criteriaBuilder.greaterThanOrEqualTo(root.get("id").as(Integer.class), Integer.valueOf(min));
+				pArray[1] = criteriaBuilder.lessThanOrEqualTo(root.get("id").as(Integer.class), Integer.valueOf(max));
+				
+				return criteriaBuilder.and(pArray);
+			}
+		};
+		for(Sukebei404 s4 : fourDao.findAll(spec4))
+		{
+			downloaded.add(s4.getId());
+		}
+		
+		List<Integer> result = new ArrayList<>();
+		for(int i = min ; i <= max ; i++)
+		{
+			if(!downloaded.contains(Integer.valueOf(i)))
+			{
+				result.add(i);
+			}
+		}
+		
+		return result;
+	}
+
+	@Override
+	public Sukebei404 save(Sukebei404 sukebei404)
+	{
+		return fourDao.save(sukebei404);
 	}
 
 	
