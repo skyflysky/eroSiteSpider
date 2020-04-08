@@ -4,6 +4,7 @@ import java.util.List;
 
 import sky.tool.spider.entity.Sukebei;
 import sky.tool.spider.entity.Sukebei404;
+import sky.tool.spider.entity.Sukebei500502;
 import sky.tool.spider.entity.SukebeiPage;
 
 public interface SukebeiNyaaFunService
@@ -23,4 +24,6 @@ public interface SukebeiNyaaFunService
 	List<Integer> getUndownloadedWebId(int max , int min);
 	
 	Sukebei404 save(Sukebei404 sukebei404);
+	
+	Sukebei500502 save(Sukebei500502 sukebei500502);
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSONArray;
 
 import sky.tool.spider.entity.Sukebei404;
+import sky.tool.spider.entity.Sukebei500502;
 import sky.tool.spider.entity.SukebeiPage;
 import sky.tool.spider.service.SukebeiNyaaFunService;
 import sky.tool.spider.utils.SpringUtil;
@@ -79,8 +80,16 @@ public class SukebeiPagePipeline implements Pipeline
 		}
 		else
 		{
-			service.save(new Sukebei404(resultItems.get("webId")));
-			logger.info("没有数据:\t" + resultItems.get("webId"));
+			if(new Integer(200).equals(resultItems.get("code")))
+			{
+				service.save(new Sukebei404(resultItems.get("webId")));
+				logger.info("没有数据:\t" + resultItems.get("webId"));
+			}
+			else
+			{
+				service.save(new Sukebei500502(resultItems.get("webId")));
+				logger.info("网页错误:\t" + resultItems.get("webId"));
+			}
 		}
 	}
 }
