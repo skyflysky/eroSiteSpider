@@ -145,7 +145,7 @@ public class SukebeiNyaaFunServiceImpl implements SukebeiNyaaFunService
 			downloaded.add(s4.getId());
 		}
 		
-		if(download50)
+		if(!download50)
 		{
 			Specification<Sukebei500502> spec5 = new Specification<Sukebei500502>()
 			{
