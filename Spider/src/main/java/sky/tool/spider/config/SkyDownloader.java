@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Request;
+import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.downloader.HttpClientDownloader;
 
@@ -14,6 +15,17 @@ import us.codecraft.webmagic.downloader.HttpClientDownloader;
 public class SkyDownloader extends HttpClientDownloader
 {
 	private Logger logger = Logger.getLogger(SkyDownloader.class);
+	
+	public static Site sukeibeiSite = Site.me()
+			.setRetryTimes(3)
+			.setRetrySleepTime(1500)
+			.setCycleRetryTimes(5)
+			.setSleepTime(500)
+			.addCookie("sukebei.nyaa.fun","iads", "alive")
+			.addCookie(".nyaa.fun", "__cfduid", "d319e4f93d4e6ed741321ad1763f7537d1586251669")
+			.addCookie(".nyaa.fun", "_ga", "GA1.2.1213555172.1586251672")
+			.addCookie(".nyaa.fun", "_gid", "GA1.2.2145201597.1587712184")
+			.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31");
 	
 	@Override
 	public Page download(Request request, Task task)
