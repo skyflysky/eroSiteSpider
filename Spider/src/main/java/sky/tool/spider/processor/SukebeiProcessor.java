@@ -54,6 +54,7 @@ public class SukebeiProcessor implements PageProcessor
 		}
 		
 		page.putField("list", innerList);
+		page.putField("url", page.getUrl().toString());
 		
 	}
 	@Override

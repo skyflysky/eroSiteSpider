@@ -13,10 +13,13 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.apache.log4j.Logger;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.stereotype.Service;
 
 import sky.tool.spider.dao.Sukebei404Dao;
@@ -48,6 +51,9 @@ public class SukebeiNyaaFunServiceImpl implements SukebeiNyaaFunService
 	
 	@Value("${sukebeipage.download50}")
 	Boolean download50;
+	
+	@Value("${sukebei.auto.limit}")
+	Integer limit;
 	
 	@Autowired
 	LocalContainerEntityManagerFactoryBean entityManagerFactory;
@@ -192,5 +198,24 @@ public class SukebeiNyaaFunServiceImpl implements SukebeiNyaaFunService
 		return fiveDao.save(sukebei500502);
 	}
 
-	
+	@Override
+	public long autoLastGrab()
+	{
+		Pageable page = PageRequest.of(0, limit, Sort.by("publishDate").descending());
+		List<Sukebei> sukebeiList = new ArrayList<>(dao.findAll(page).getContent());
+		
+		Long max = Long.MIN_VALUE;
+		Integer index = 0;
+		for(int i = 0 ; i < sukebeiList.size() - 1 ; i ++)
+		{
+			Long subtract = sukebeiList.get(i).getPublishDate().getTimeInMillis() - sukebeiList.get(i+1).getPublishDate().getTimeInMillis();
+			if(subtract >= max)
+			{
+				max = subtract;
+				index = i + 1;
+			}
+		}
+		
+		return sukebeiList.get(index).getPublishDate().getTimeInMillis();
+	}
 }

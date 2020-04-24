@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import sky.tool.spider.pipeline.SukebeiPipeline;
 import sky.tool.spider.processor.SukebeiProcessor;
+import sky.tool.spider.service.SukebeiNyaaFunService;
 import us.codecraft.webmagic.Spider;
 
 @ConditionalOnProperty(prefix="work" , name = "mode" ,havingValue = "grab")
@@ -24,6 +25,9 @@ public class SukebeiNyaaFunGrabTask extends AbstractTask
 	
 	@Autowired
 	SukebeiPipeline pipeline;
+	
+	@Autowired
+	SukebeiNyaaFunService service;
 
 	@Override
 	void doWork()
@@ -31,15 +35,32 @@ public class SukebeiNyaaFunGrabTask extends AbstractTask
 		logger.info("sukebei start");
 		String base = "https://sukebei.nyaa.fun/";
 		List<String> urlList = new ArrayList<>();
-		for(int i = maxPage ; i >= 1 ; i --)
+		
+		if(maxPage < 1)
 		{
-			StringBuilder sb = new StringBuilder(base);
-			sb.append("page/");
-			sb.append(i);
-			sb.append("/");
-			urlList.add(sb.toString());
+			pipeline.setLastTime(service.autoLastGrab());
+			urlList.add(base);
+			for(int i = 1 ; i <= 300 ; i ++)
+			{
+				StringBuilder sb = new StringBuilder(base);
+				sb.append("page/");
+				sb.append(i);
+				sb.append("/");
+				urlList.add(sb.toString());
+			}
 		}
-		urlList.add(base);
+		else
+		{
+			for(int i = maxPage ; i >= 1 ; i --)
+			{
+				StringBuilder sb = new StringBuilder(base);
+				sb.append("page/");
+				sb.append(i);
+				sb.append("/");
+				urlList.add(sb.toString());
+			}
+			urlList.add(base);
+		}
 		String[] urls = new String[urlList.size()];
 		urlList.toArray(urls);
 		Spider.create(processor).addUrl(urls).addPipeline(pipeline).thread(spiderThredCount).setDownloader(downloader).run();

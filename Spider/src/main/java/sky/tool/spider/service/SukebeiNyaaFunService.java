@@ -26,4 +26,6 @@ public interface SukebeiNyaaFunService
 	Sukebei404 save(Sukebei404 sukebei404);
 	
 	Sukebei500502 save(Sukebei500502 sukebei500502);
+	
+	long autoLastGrab();
 }

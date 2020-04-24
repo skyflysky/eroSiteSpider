@@ -12,6 +12,7 @@ import sky.tool.spider.entity.Sukebei;
 import sky.tool.spider.service.SukebeiNyaaFunService;
 import sky.tool.spider.utils.SpringUtil;
 import us.codecraft.webmagic.ResultItems;
+import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.pipeline.Pipeline;
 
@@ -19,6 +20,11 @@ import us.codecraft.webmagic.pipeline.Pipeline;
 public class SukebeiPipeline implements Pipeline
 {
 	private Logger logger = Logger.getLogger(SukebeiPipeline.class);
+	
+	/**
+	 * 数据库中最大的publish时间
+	 */
+	private long lastTime = Long.MIN_VALUE;
 	
 	@Autowired
 	SukebeiNyaaFunService service;
@@ -28,13 +34,17 @@ public class SukebeiPipeline implements Pipeline
 	{
 		List<Map<String,String>> list = resultItems.get("list");
 		
+		//当前页面最大的publish时间
+		long time = Long.MIN_VALUE;
+		
 		for(Map<String, String> map : list)
 		{
+			Calendar c = Calendar.getInstance();
+			c.setTimeInMillis(Long.valueOf(map.get("publish")) * 1000);
+			time = Long.max(c.getTimeInMillis() , time);
+			
 			if(!service.checkSukebeiExistence(Integer.valueOf(map.get("webId"))))
 			{
-				Calendar c = Calendar.getInstance();
-				c.setTimeInMillis(Long.valueOf(map.get("publish")) * 1000);
-				
 				String fileName = SpringUtil.getFileName(map.get("magnet"));
 				
 				Sukebei s = new Sukebei(Integer.valueOf(map.get("webId")), 
@@ -61,7 +71,18 @@ public class SukebeiPipeline implements Pipeline
 			}
 		}
 		
+		if(time < lastTime)
+		{ 
+			logger.info("检测到停止条件在页面" + resultItems.get("url"));
+			Spider spider = (Spider) task;
+			spider.stop();
+		}
+		
 	}
 	
-	
+	public void setLastTime(Long lastTime)
+	{
+		this.lastTime = lastTime;
+		logger.info("上次列表页最新的时间戳:" + lastTime);
+	}
 }
