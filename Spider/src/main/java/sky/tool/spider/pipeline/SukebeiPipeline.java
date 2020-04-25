@@ -56,19 +56,19 @@ public class SukebeiPipeline implements Pipeline
 						map.get("size"), 
 						c, 
 						fileName);
-				//logger.info("新增\t" + map.get("title"));
+				logger.info("新增\t" + map.get("title"));
 				try
 				{
 					service.save(s);
 				}
 				catch (org.hibernate.exception.ConstraintViolationException |org.springframework.dao.DataIntegrityViolationException e)
 				{
-					//logger.info("已存在\t" + map.get("title"));
+					logger.info("已存在\t" + map.get("title"));
 				}
 			}
 			else
 			{
-				//logger.info("已存在\t" + map.get("title"));
+				logger.info("已存在\t" + map.get("title"));
 			}
 		}
 		

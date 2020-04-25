@@ -35,12 +35,11 @@ public class SukebeiNyaaFunGrabTask extends AbstractTask
 		logger.info("sukebei start");
 		String base = "https://sukebei.nyaa.fun/";
 		List<String> urlList = new ArrayList<>();
-		//int threadCount = spiderThredCount;
 		
 		if(maxPage < 1)
 		{
-			//threadCount = 2;
 			pipeline.setLastTime(service.autoLastGrab());
+			logger.info("自动抓取模式");
 			urlList.add(base);
 			StringBuilder sb = new StringBuilder(base);
 			sb.append("page/");
@@ -50,6 +49,7 @@ public class SukebeiNyaaFunGrabTask extends AbstractTask
 		}
 		else
 		{
+			logger.info("手动抓取模式，最大抓取页面:" + maxPage);
 			for(int i = maxPage ; i >= 1 ; i --)
 			{
 				StringBuilder sb = new StringBuilder(base);
