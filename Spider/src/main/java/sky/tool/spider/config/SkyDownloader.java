@@ -19,7 +19,7 @@ public class SkyDownloader extends HttpClientDownloader
 	public static Site sukeibeiSite = Site.me()
 			.setRetryTimes(3)
 			.setRetrySleepTime(1500)
-			.setCycleRetryTimes(5)
+			.setCycleRetryTimes(10)
 			.setSleepTime(500)
 			.addCookie("sukebei.nyaa.fun","iads", "alive")
 			.addCookie(".nyaa.fun", "__cfduid", "d319e4f93d4e6ed741321ad1763f7537d1586251669")

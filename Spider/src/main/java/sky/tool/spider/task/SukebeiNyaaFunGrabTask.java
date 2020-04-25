@@ -35,19 +35,18 @@ public class SukebeiNyaaFunGrabTask extends AbstractTask
 		logger.info("sukebei start");
 		String base = "https://sukebei.nyaa.fun/";
 		List<String> urlList = new ArrayList<>();
+		//int threadCount = spiderThredCount;
 		
 		if(maxPage < 1)
 		{
+			//threadCount = 2;
 			pipeline.setLastTime(service.autoLastGrab());
 			urlList.add(base);
-			for(int i = 1 ; i <= 300 ; i ++)
-			{
-				StringBuilder sb = new StringBuilder(base);
-				sb.append("page/");
-				sb.append(i);
-				sb.append("/");
-				urlList.add(sb.toString());
-			}
+			StringBuilder sb = new StringBuilder(base);
+			sb.append("page/");
+			sb.append(1);
+			sb.append("/");
+			urlList.add(sb.toString());
 		}
 		else
 		{
