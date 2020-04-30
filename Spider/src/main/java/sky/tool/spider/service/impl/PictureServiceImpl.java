@@ -12,8 +12,10 @@ import javax.persistence.criteria.Root;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +37,9 @@ public class PictureServiceImpl implements PictureService
 	
 	@Autowired
 	PicPageDao ppDao;
+	
+	@Value("${check.page.size}")
+	private Integer pagesize;
 	
 	@SuppressWarnings("restriction")
 	@Override
@@ -243,5 +248,55 @@ public class PictureServiceImpl implements PictureService
 		PicUrl pu = puDao.getOne(id);
 		pu.setReTryCount(pu.getReTryCount() + 1);
 		puDao.save(pu);
+	}
+
+	@Override
+	public List<PicUrl> checkPic(Integer page)
+	{
+		Pageable pageable = PageRequest.of(page, pagesize , Sort.by("id").ascending());
+		Specification<PicUrl> spec = new Specification<PicUrl>()
+		{
+			private static final long serialVersionUID = -4659191265996580098L;
+
+			@Override
+			public Predicate toPredicate(Root<PicUrl> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder)
+			{
+				return criteriaBuilder.equal(root.get("dawnload").as(Boolean.class), Boolean.TRUE);
+			}
+		};
+		return puDao.findAll(spec, pageable).getContent();
+	}
+
+	@Override
+	public Integer deletePicLog(List<PicUrl> list)
+	{
+		List<Long> idList = new ArrayList<>();
+		for(PicUrl u : list)
+		{
+			idList.add(u.getId());
+		}
+		
+		int result = puDao.redownload(idList);
+		
+		if (result == idList.size())
+		{
+			for(PicUrl u : list)
+			{
+				try
+				{
+					new File(u.getLocalPath()).delete();
+				}
+				catch (Exception e)
+				{
+					logger.error(e);
+					continue;
+				}
+			}
+			return result;
+		}
+		else
+		{
+			return -1;
+		}
 	}
 }

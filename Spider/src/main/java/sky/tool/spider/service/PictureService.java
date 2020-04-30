@@ -64,6 +64,8 @@ public interface PictureService
 	 */
 	List<PicPage> findAblePage();
 	
+	List<PicUrl> checkPic(Integer page);
+	
 	boolean setPicPageOpenAble(boolean openAble , PicPage picPage);
 	
 	int setPicPageCount(int picCount , PicPage picPage);
@@ -71,4 +73,6 @@ public interface PictureService
 	PicPage getPicPageByWebId(Integer webId);
 
 	void tryDownloadPicUrl(Long id);
+	
+	Integer deletePicLog(List<PicUrl> list);
 }
