@@ -37,7 +37,7 @@ public class SukebeiNyaaFunPageGrabTask extends AbstractTask
 	void doWork()
 	{
 		logger.info("sukebeipage start");
-		String base = "https://sukebei.nyaa.fun/view/";
+		String base = "https://nyaa.fun/view/";
 		if(max >= min)
 		{
 			List<String> urlList = new ArrayList<>();

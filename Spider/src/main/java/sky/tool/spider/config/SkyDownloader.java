@@ -21,10 +21,12 @@ public class SkyDownloader extends HttpClientDownloader
 			.setRetrySleepTime(1500)
 			.setCycleRetryTimes(10)
 			.setSleepTime(500)
-			.addCookie("sukebei.nyaa.fun","iads", "alive")
 			.addCookie(".nyaa.fun", "__cfduid", "d319e4f93d4e6ed741321ad1763f7537d1586251669")
 			.addCookie(".nyaa.fun", "_ga", "GA1.2.1213555172.1586251672")
-			.addCookie(".nyaa.fun", "_gid", "GA1.2.2145201597.1587712184")
+			.addCookie(".nyaa.fun", "_gat_gtag_UA_144337329_2", "1")
+			.addCookie(".nyaa.fun", "_gid", "GA1.2.1901076260.1588587312")
+			.addCookie(".nyaa.fun","iads", "alive")
+			.addCookie("nyaa.fun", "splash_i", "false")
 			.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31");
 	
 	@Override
