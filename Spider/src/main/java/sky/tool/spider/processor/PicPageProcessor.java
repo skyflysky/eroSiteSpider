@@ -20,7 +20,7 @@ public class PicPageProcessor implements PageProcessor
 	public void process(Page page)
 	{
 		logger.info("开始处理页面:'" + page.getUrl() + "'");
-		List<String> infos = page.getHtml().css("#tpl-img-content > li > a:nth-child(1)").all();
+		List<String> infos = page.getHtml().css("#tpl-img-content > li ").all();
 		page.putField("infos", infos);
 		page.putField("type", page.getHtml().css(".cat_pos_l > a:nth-child(3)").get());
 		logger.info("页面:'" + page.getUrl() +"'处理完成");
