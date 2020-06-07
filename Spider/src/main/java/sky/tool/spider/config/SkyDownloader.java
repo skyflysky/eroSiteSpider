@@ -29,6 +29,13 @@ public class SkyDownloader extends HttpClientDownloader
 			.addCookie("nyaa.fun", "splash_i", "false")
 			.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31");
 	
+	public static Site site = Site.me()
+			.setRetryTimes(3)
+			.setRetrySleepTime(1500)
+			.setCycleRetryTimes(10)
+			.setSleepTime(500)
+			.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31");
+	
 	@Override
 	public Page download(Request request, Task task)
 	{

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,9 @@ public class PicPageTask extends AbstractTask
 
 	@Autowired
 	PicPagePipeline ppPipeline;
+	
+	@Value("${grab.pages}")
+	Integer pages;
 	
 	private String[] thirdPaths = 
 		{
@@ -42,7 +46,7 @@ public class PicPageTask extends AbstractTask
 		List<String> urlList = new ArrayList<String>();
 		for (String thirdPath : thirdPaths)
 		{
-			for (int i = 1; i <= 5; i++)
+			for (int i = 1; i <= pages; i++)
 			{
 				StringBuilder sb = new StringBuilder("https://");
 				sb.append(domain);

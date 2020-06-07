@@ -56,10 +56,15 @@ public class SpringUtil implements ApplicationContextAware
 
 	public static Integer getWebIdFromUrl(String url, String ngateMark) throws NumberFormatException
 	{
-		Integer webid = Integer.valueOf(url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf(".")));
-		if (!url.contains(ngateMark))
+		Integer webid;
+		if(url.contains("-"))
 		{
+			webid = Integer.valueOf(url.substring(url.lastIndexOf("-") + 1, url.lastIndexOf(".")));
 			webid = Math.negateExact(webid);
+		}
+		else
+		{
+			webid = Integer.valueOf(url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf(".")));
 		}
 		return webid;
 	}

@@ -41,7 +41,7 @@ public class VideoUrlTask extends AbstractTask
 			}
 			else
 			{
-				sb.append("/shipin/");
+				sb.append("/shipin/play-");
 				sb.append(Math.abs(vp.getWebId()));
 			}
 			sb.append(".html");

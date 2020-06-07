@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,9 @@ public class NovelPageTask extends AbstractTask
 {
 	@Autowired
 	NovelService novelService;
+	
+	@Value("${grab.pages}")
+	Integer pages;
 	
 	private String[] thridPaths=
 		{
@@ -45,7 +49,7 @@ public class NovelPageTask extends AbstractTask
 		List<String> urlList = new ArrayList<String>();
 		for(String thirdPath : thridPaths)
 		{
-			for(int i = 10 ; i >= 1 ; i--)
+			for(int i = pages ; i >= 1 ; i--)
 			{
 				StringBuilder sb = new StringBuilder("https://");
 				sb.append(domain);

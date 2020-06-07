@@ -202,6 +202,10 @@ public class VideoUrl
 				this.fileName = null;
 			}
 		}
+		else if (magnet.startsWith("http"))
+		{
+			this.fileName = magnet.substring(magnet.lastIndexOf('/') + 1);
+		}
 		else
 		{
 			this.fileName = null;

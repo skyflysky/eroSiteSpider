@@ -1,8 +1,15 @@
 package sky.tool.spider.processor;
 
+import java.util.UUID;
+
 import org.apache.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
+import sky.tool.spider.config.SkyDownloader;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.processor.PageProcessor;
@@ -12,25 +19,36 @@ public class VideoUrlProcessor implements PageProcessor
 {
 	Logger logger = Logger.getLogger(VideoUrlProcessor.class);
 	
-	private Site site = Site.me().setRetryTimes(3).setSleepTime(1500).setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31");
-
 	@Override
 	public void process(Page page)
 	{
 		logger.info("正在下载" + page.getUrl().toString());
-		page.putField("type", page.getHtml().css("div.pull-left:nth-child(2) > div:nth-child(2) > p:nth-child(1)").toString());
-		page.putField("uploadDate", page.getHtml().css("div.pull-left:nth-child(2) > div:nth-child(3) > p:nth-child(1)").toString());
-		page.putField("magnate", page.getHtml().css("#lin1k1").toString());
-		page.putField("titlePic", page.getHtml().css(".lazy").toString());
-		page.putField("title", page.getHtml().css("h2.c_pink").toString());
+		
+		Document d = Jsoup.parse(page.getHtml().css("#main-container").get());
+		
+		page.putField("type", d.getElementsByClass("row nav-row").first().getElementsByTag("a").last().html());
+		page.putField("magnate", d.getElementsByClass("form-control input-sm fdm_down").first().attr("value"));
+		page.putField("titlePic", "https://i0.hdslb.com/bfs/manga-static/manga-pc/img/c9219d816eacd.png");
 		page.putField("url", page.getUrl().toString());
+		Element elem = d.getElementById("shipin-detail-content-pull");
+		if(elem != null)
+		{
+			page.putField("title", elem.getElementsByTag("h2").first().html());
+			page.putField("uploadDate", elem.getElementsByTag("p").get(1).html());
+		}
+		else
+		{
+			page.putField("title", UUID.randomUUID().toString());
+			page.putField("uploadDate", null);
+		}
+		
 		logger.info("下载完成" + page.getUrl().toString());
 	}
 
 	@Override
 	public Site getSite()
 	{
-		return this.site;
+		return SkyDownloader.site;
 	}
 	
 }

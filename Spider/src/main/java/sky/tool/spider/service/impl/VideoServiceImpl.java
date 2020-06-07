@@ -11,6 +11,9 @@ import javax.persistence.criteria.Root;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -109,7 +112,7 @@ public class VideoServiceImpl implements VideoService
 				return cb.and(pArray);
 			}
 		};
-		return vuDao.findAll(spec);
+		return vuDao.findAll(spec , PageRequest.of(0, 20, Sort.by(Direction.DESC, "id"))).getContent();
 	}
 
 	@Override
