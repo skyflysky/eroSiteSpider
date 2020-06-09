@@ -21,7 +21,7 @@ public interface VideoService
 	
 	VideoUrl insert(VideoUrl videoUrl);
 
-	List<VideoUrl> unloadVideo(Calendar lastTime);
+	List<VideoUrl> unloadVideo(Calendar lastTime , Integer downloadSize);
 
 	boolean downloadUrl(VideoUrl vu);
 	

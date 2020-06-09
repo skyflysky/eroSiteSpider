@@ -33,6 +33,9 @@ public class VideoDownLoadTask extends AbstractTask
 	@Autowired
 	VideoService videoService;
 	
+	@Value("${download.size}")
+	Integer downloadSize;
+	
 	@Override
 	void doWork()
 	{
@@ -50,7 +53,7 @@ public class VideoDownLoadTask extends AbstractTask
 				logger.error("上次下载日期输入有误！");
 				return;
 			}
-			List<VideoUrl> urlList = videoService.unloadVideo(lastTime);
+			List<VideoUrl> urlList = videoService.unloadVideo(lastTime , downloadSize);
 			Scanner scanner = new Scanner(System.in);
 			try
 			{

@@ -92,7 +92,7 @@ public class VideoServiceImpl implements VideoService
 	}
 
 	@Override
-	public List<VideoUrl> unloadVideo(Calendar lastTime)
+	public List<VideoUrl> unloadVideo(Calendar lastTime , Integer downloadSize)
 	{
 		logger.info("开始查询自" + SpringUtil.ymdFomat().format(lastTime.getTime()) + "至今的数据");
 		Specification<VideoUrl> spec = new Specification<VideoUrl>()
@@ -112,7 +112,11 @@ public class VideoServiceImpl implements VideoService
 				return cb.and(pArray);
 			}
 		};
-		return vuDao.findAll(spec , PageRequest.of(0, 20, Sort.by(Direction.DESC, "id"))).getContent();
+		if(downloadSize > 0)
+		{
+			return vuDao.findAll(spec , PageRequest.of(0, downloadSize, Sort.by(Direction.DESC, "id"))).getContent();
+		}
+		return vuDao.findAll(spec , Sort.by(Direction.DESC, "id"));
 	}
 
 	@Override

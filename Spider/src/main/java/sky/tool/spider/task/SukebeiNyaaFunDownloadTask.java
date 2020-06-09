@@ -29,6 +29,9 @@ public class SukebeiNyaaFunDownloadTask extends AbstractTask
 	
 	@Autowired
 	SukebeiNyaaFunService service;
+	
+	@Value("${download.size}")
+	Integer downloadSize;
 
 	@Override
 	void doWork()
@@ -41,7 +44,7 @@ public class SukebeiNyaaFunDownloadTask extends AbstractTask
 			Scanner scanner = new Scanner(System.in);
 			logger.info("开始唤起迅雷，迅雷唤起后，输入任意字符以继续");
 			Runtime.getRuntime().exec(thunderProgramPath);
-			List<Sukebei> sukebeiList = service.getSukebeiBySql(sql);
+			List<Sukebei> sukebeiList = service.getSukebeiBySql(sql , downloadSize);
 			scanner.next();
 			File torrentFatherFile = new File(thunderTorrentsPath);
 			File torrentTargetFile = new File(storage , "torrent");

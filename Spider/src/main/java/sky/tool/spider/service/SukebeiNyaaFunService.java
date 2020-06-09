@@ -17,7 +17,7 @@ public interface SukebeiNyaaFunService
 	
 	SukebeiPage save(SukebeiPage sukebeiPage);
 	
-	List<Sukebei> getSukebeiBySql(String sql);
+	List<Sukebei> getSukebeiBySql(String sql , Integer downloadSize);
 	
 	Sukebei setDownloaded(String torrentPath , Sukebei sukebei); 
 	

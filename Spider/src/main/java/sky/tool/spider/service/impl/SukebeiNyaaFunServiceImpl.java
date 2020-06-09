@@ -73,13 +73,23 @@ public class SukebeiNyaaFunServiceImpl implements SukebeiNyaaFunService
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Sukebei> getSukebeiBySql(String sql)
+	public List<Sukebei> getSukebeiBySql(String sql , Integer downloadSize)
 	{
 		logger.info(sql);
 		EntityManager em = entityManagerFactory.getNativeEntityManagerFactory().createEntityManager();
 		em.getTransaction().begin();
 		Query query = em.createNativeQuery(sql,Sukebei.class);
-		return query.getResultList();
+		List<Sukebei> resultList = new ArrayList<>(query.getResultList());
+		if(downloadSize > 0)
+		{
+			List<Sukebei> tempList = new ArrayList<>(downloadSize);
+			for(int i = 0  ; i < downloadSize ; i++)
+			{
+				tempList.add(resultList.get(i));
+			}
+			return tempList;
+		}
+		return resultList;
 	}
 
 	@Override
