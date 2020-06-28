@@ -49,10 +49,6 @@ public class PicPagePipeline implements Pipeline
 				{
 					logger.info("页面" + urls + "抓取成功");
 				}
-				else
-				{
-					logger.error("页面" + urls + "抓取失败");
-				}
 			} 
 			//webId 是唯一约束
 			catch (MySQLIntegrityConstraintViolationException | org.hibernate.exception.ConstraintViolationException |org.springframework.dao.DataIntegrityViolationException  e)

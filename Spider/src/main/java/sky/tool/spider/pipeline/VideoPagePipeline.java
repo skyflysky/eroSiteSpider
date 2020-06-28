@@ -44,10 +44,6 @@ public class VideoPagePipeline implements Pipeline
 					{
 						logger.info("页面" + vp.getUrl() +"抓取成功");
 					}
-					else
-					{
-						logger.error("页面" + url + "抓取失败");
-					}
 				} 
 				//webId  唯一约束
 				catch (MySQLIntegrityConstraintViolationException | org.hibernate.exception.ConstraintViolationException |org.springframework.dao.DataIntegrityViolationException  e)

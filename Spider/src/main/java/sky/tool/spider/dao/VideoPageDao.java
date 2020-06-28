@@ -15,4 +15,11 @@ public interface VideoPageDao extends JpaRepository<VideoPage, Long> , JpaSpecif
 	 * @return
 	 */
 	VideoPage findOneByWebId(Integer webid);
+	
+	/**
+	 * 根据webid 看有没有对应的实体类
+	 * @param webid
+	 * @return
+	 */
+	int countByWebId(Integer webid);
 }

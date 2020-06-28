@@ -15,4 +15,11 @@ public interface PicPageDao extends JpaRepository<PicPage, Long> , JpaSpecificat
 	 * @return
 	 */
 	PicPage findOneByWebId(Integer WebId);
+	
+	/**
+	 * 根据webId查找数量
+	 * @param webId
+	 * @return
+	 */
+	int countByWebId(Integer webId);
 }

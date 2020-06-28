@@ -54,10 +54,6 @@ public class NovelPagePipeline implements Pipeline
 				{
 					logger.info("新增页面:'" + href + "'成功");
 				}
-				else
-				{
-					logger.error("页面:'" + resultItems.get("url") + "解析失败");
-				}
 			} 
 			//webId是唯一约束 如果抓到唯一约束 则这个页面之前解析过，不再解析
 			catch (MySQLIntegrityConstraintViolationException | org.hibernate.exception.ConstraintViolationException |org.springframework.dao.DataIntegrityViolationException e)

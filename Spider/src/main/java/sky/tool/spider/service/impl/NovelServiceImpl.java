@@ -38,7 +38,15 @@ public class NovelServiceImpl implements NovelService
 	@Override
 	public NovelPage insertNovelPage(NovelPage novelPage) throws MySQLIntegrityConstraintViolationException
 	{
-		return npDao.save(novelPage);
+		if(npDao.countByWebId(novelPage.getWebId()) == 0)
+		{
+			return npDao.save(novelPage);
+		}
+		else
+		{
+			logger.info("数据已存在");
+			return null;
+		}
 	}
 
 	@Override

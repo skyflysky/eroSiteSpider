@@ -22,4 +22,11 @@ public interface NovelPageDao extends JpaRepository<NovelPage, Long>  , JpaSpeci
 	 * @return
 	 */
 	NovelPage findByWebId(Integer webId);
+	
+	/**
+	 * 根据webId查询数量
+	 * @param webId
+	 * @return
+	 */
+	int countByWebId(Integer webId);
 }

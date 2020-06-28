@@ -46,9 +46,17 @@ public class VideoServiceImpl implements VideoService
 	public VideoPage insertVideoPage(String url) throws NumberFormatException, com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException
 	{
 		VideoPage videoPage = new VideoPage(url);
-		VideoPage vp = vpDao.save(videoPage);
-		logger.info("新增网页地址:'" + url + "'");
-		return vp;
+		if(vpDao.countByWebId(videoPage.getWebId()) == 0)
+		{
+			VideoPage vp = vpDao.save(videoPage);
+			logger.info("新增网页地址:'" + url + "'");
+			return vp;
+		}
+		else
+		{
+			logger.info("网址:'" + url + "'已经被记录过了");
+			return null;
+		}
 	}
 	
 	@Override

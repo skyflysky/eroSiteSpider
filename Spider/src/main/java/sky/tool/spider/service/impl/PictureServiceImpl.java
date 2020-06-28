@@ -40,7 +40,15 @@ public class PictureServiceImpl implements PictureService
 	@Override
 	public PicPage insertPicPage(PicPage picPage) throws com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException , NumberFormatException
 	{
-		return ppDao.save(picPage);
+		if(ppDao.countByWebId(picPage.getWebId()) == 0)
+		{
+			return ppDao.save(picPage);
+		}
+		else
+		{
+			logger.info("已经被记录过了");
+			return null;
+		}
 	}
 
 	@Override
